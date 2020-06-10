@@ -2,8 +2,11 @@ package algorithms;
 
 import java.io.File; // Import the File class
 import java.io.FileNotFoundException; // Import this class to handle errors
+import java.util.Iterator;
 import java.util.Scanner; // Import the Scanner class to read text files
 import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import dataStructures.Graph;
 
@@ -14,15 +17,16 @@ public class MainClass {
 	 * permet emmagatzemar l’estructura de la xarxa, així com els atributs als nodes
 	 * i a les arestes. La xarxa es suposa no dirigida.
 	 */
-	private static Graph<Integer, String> generaGraph(String path) {
-		Graph<Integer, String> graph = new Graph<>();
+	private static Graph<String, String> generaGraph(String path) {
+		Graph<String, String> graph = new Graph<>();
 
 		try {
 			File myObj = new File(path);
 			Scanner myReader = new Scanner(myObj);
 			String lane = myReader.nextLine();
 			String[] words;
-			
+			Pattern pattern = Pattern.compile("(\\w+)([0-9]*\\.?[0-9]*)");
+			Matcher matcher;
 			if (lane.split(" ")[0].equals("*Vertices")) {
 
 				while(myReader.hasNextLine()) {
@@ -30,14 +34,29 @@ public class MainClass {
 					if(lane.equals("*Edges")) {
 						break;
 					}
-					words = lane.split(" ");
-					//vértice
+					matcher = pattern.matcher(lane);
+					int i = 0;
+					String info = "";
+					matcher.find();
+					while (matcher.find()) {
+							if (i != 0) {
+								info = info.concat(" ");
+								
+							}
+							i++;
+							info = info.concat(matcher.group());
+					    }
+					graph.addNode(info);
 				}
 				while(myReader.hasNextLine()) { 
 					lane = myReader.nextLine();
-					words = lane.split(" ");
-					System.out.println(words[0]);
-					//añadir arista 
+					matcher = pattern.matcher(lane);
+					matcher.find();
+					Integer A = Integer.parseInt(matcher.group());
+					matcher.find();
+					Integer B = Integer.parseInt(matcher.group());
+					matcher.find();
+					graph.addEdgeIDX(A, B, matcher.group());
 				}
 			}
 			else { 
@@ -53,7 +72,13 @@ public class MainClass {
 		}
 		return graph;
 	}
-	private static int DFS() {
+	private static int DFS(Graph<String, String> graph, String inici, Set<String> llista) {
+		/*
+		 * crear cola
+		 * borrar inici de llista
+		 * sacar adyacencias de inici
+		 * 
+		 */
 		return 0;
 	}
 
@@ -61,27 +86,23 @@ public class MainClass {
 	 * Detecció de components connexes utilitzant un algorisme d’exploració com els
 	 * explicats a classe.
 	 */
-	private static void getGraphInfo(Graph<Integer, String> graph, int[] info) {
-		int numNodesVisit = 0, NCC = 1, GCC = 1, SLCC = 1, grau;
-		boolean first = true;
-		// lista de nodos del grafo
-		while(numNodesVisit < graph.getnElem()) {
-			grau = DFS(/*node*/,/*llista nodes*/);
+	private static void getGraphInfo(Graph<String, String> graph, Integer[] info) {
+		int NCC = 0, GCC = 1, SLCC = 1, grau;
+		Set<String> nodes = graph.getAllNodes();
+		System.out.println(nodes.size());
+		while(!nodes.isEmpty()) {
+			grau = DFS(graph,nodes.iterator().next(), nodes);
 			
-			if (grau > GCC) {
+			if (grau >= GCC) {
+				SLCC = GCC;
 				GCC = grau;
-				first = false;
-			}
-			if (grau > SLCC & grau <= GCC & !first)
+			} else if (grau > SLCC)
 				SLCC = grau;
+			NCC++;
 		}
-		/*
-		 * sacar lista de nodos del grafo
-		 * mirar todas las componentes conexas del primer nodo
-		 * mirar todas las componentes conexas del siguiente nodo sin visitar
-		 * componentes conexas ++ / comparar con la pirmera y segunda componente mas grande.
-		 * repetir hasta que no queden nodos sin visitar
-		 */
+		info[0] = NCC;
+		info[1] = GCC;
+		info[2] = SLCC;
 	}
 
 	/*
@@ -103,12 +124,19 @@ public class MainClass {
 	}
 
 	public static void main(String[] args) {
-		Graph<Integer, String> myGraph1 = new Graph<>();
-		Graph<Integer, String> myGraph2 = new Graph<>();
+		Graph<String, String> myGraph1 = new Graph<>();
+		//Graph<Integer, String> myGraph2 = new Graph<>();
 
-		generaGraph("networks/airports_UW.net");
-
-		myGraph1.addNode(0);
+		//generaGraph("networks/wtw2000-sym.net");
+		//myGraph1 = generaGraph("networks/airports_UW.net");
+		myGraph1 = generaGraph("networks/wtw2000-sym.net");
+		Integer[] info = new Integer[3]; 
+		getGraphInfo(myGraph1, info);
+		System.out.println(info[0]);
+		System.out.println(info[1]);
+		System.out.println(info[2]);
+		
+		/*yGraph1.addNode(0);
 		myGraph1.addNode(20);
 
 		myGraph2.addNode(0);
@@ -130,7 +158,7 @@ public class MainClass {
 
 		for (Integer elem : nodes) {
 
-		}
+		}*/
 
 	}
 
