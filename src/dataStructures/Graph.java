@@ -13,6 +13,7 @@ public class Graph<NodeData, EdgeData> {
 	int nElem;
 	int nVertex;
 	private HashMap<NodeData, LinkedList<EdgeT>> graph = new HashMap<>();
+	boolean repeat;
 	
 	/**
 	 * Petita classe per guardar l'informació d'un vèrtex i un enllaç
@@ -43,11 +44,15 @@ public class Graph<NodeData, EdgeData> {
 		}
 		
 	}
-	
-	public Graph() {
+	/**
+	 * 
+	 * @param repeat Determina si volem afegir l'enllaç A->B i B->A o no
+	 */
+	public Graph(boolean repeat) {
 		super();
 		this.nElem = 0;
 		this.nVertex = 0;
+		this.repeat = repeat;
 	}
 	
 	/**
@@ -65,9 +70,8 @@ public class Graph<NodeData, EdgeData> {
 	 * @param nodeA
 	 * @param nodeB
 	 * @param edgeData
-	 * @param repeat Determina si volem afegir l'enllaç A->B i B->A o no
 	 */
-	public void addEdge(NodeData valA, NodeData valB, EdgeData edgeData, boolean repeat) {
+	public void addEdge(NodeData valA, NodeData valB, EdgeData edgeData) {
 		//Si algun dels nodes no existeix, afegeix-lo
 		if(!graph.containsKey(valA))
 			this.addNode(valA);
@@ -80,7 +84,7 @@ public class Graph<NodeData, EdgeData> {
 		 * Afegeix com a node el element que te un hashcode més gran, l'altre com a enllaç.
 		 * Seria interessant que la classe dels nodes tingui ben implementat hashCode
 		 */
-		if(repeat) {
+		if(this.repeat) {
 			EdgeT edge1 = new EdgeT(edgeData, valB);
 			graph.get(valA).add(edge1);
 			EdgeT edge2 = new EdgeT(edgeData, valA);
