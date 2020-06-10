@@ -53,16 +53,27 @@ public class MainClass {
 		}
 		return graph;
 	}
+	private static int DFS() {
+		return 0;
+	}
 
 	/*
 	 * Detecció de components connexes utilitzant un algorisme d’exploració com els
 	 * explicats a classe.
 	 */
 	private static void getGraphInfo(Graph<Integer, String> graph, int[] info) {
-		int numNodesVisit = 0, NCC = 0, GCC = 0, SLCC = 0;
+		int numNodesVisit = 0, NCC = 1, GCC = 1, SLCC = 1, grau;
+		boolean first = true;
 		// lista de nodos del grafo
 		while(numNodesVisit < graph.getnElem()) {
+			grau = DFS(/*node*/,/*llista nodes*/);
 			
+			if (grau > GCC) {
+				GCC = grau;
+				first = false;
+			}
+			if (grau > SLCC & grau <= GCC & !first)
+				SLCC = grau;
 		}
 		/*
 		 * sacar lista de nodos del grafo
