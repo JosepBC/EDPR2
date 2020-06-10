@@ -1,5 +1,7 @@
 package algorithms;
 
+import java.util.Set;
+
 import dataStructures.Graph;
 
 public class MainClass {
@@ -24,6 +26,15 @@ public class MainClass {
 		
 		myGraph2.removeNode(0);
 		System.out.println(myGraph2.toString());
+		
+		Set<Integer> nodes = myGraph1.getAllNodes();
+		System.out.println(nodes);
+		
+		for(Integer elem : nodes) {
+			
+		}
+		
+		
 	}
 
 }

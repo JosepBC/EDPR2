@@ -129,6 +129,10 @@ public class Graph<NodeData, EdgeData> {
 		return nVertex;
 	}
 
+	public Set<NodeData> getAllNodes() {
+		return this.graph.keySet();
+	}
+	
 	@Override
 	public String toString() {
 		return "Graph [nElem=" + nElem + ", nVertex=" + nVertex + ", graph=" + graph + "]";
