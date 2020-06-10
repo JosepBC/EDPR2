@@ -59,7 +59,18 @@ public class MainClass {
 	 * explicats a classe.
 	 */
 	private static void getGraphInfo(Graph<Integer, String> graph, int[] info) {
-
+		int numNodesVisit = 0, NCC = 0, GCC = 0, SLCC = 0;
+		// lista de nodos del grafo
+		while(numNodesVisit < graph.getnElem()) {
+			
+		}
+		/*
+		 * sacar lista de nodos del grafo
+		 * mirar todas las componentes conexas del primer nodo
+		 * mirar todas las componentes conexas del siguiente nodo sin visitar
+		 * componentes conexas ++ / comparar con la pirmera y segunda componente mas grande.
+		 * repetir hasta que no queden nodos sin visitar
+		 */
 	}
 
 	/*
