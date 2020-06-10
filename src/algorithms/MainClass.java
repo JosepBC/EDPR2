@@ -15,7 +15,7 @@ public class MainClass {
 	 * i a les arestes. La xarxa es suposa no dirigida.
 	 */
 	private static Graph<Integer, String> generaGraph(String path) {
-		Graph<Integer, String> graph = new Graph<>(true);
+		Graph<Integer, String> graph = new Graph<>();
 
 		try {
 			File myObj = new File(path);
@@ -103,8 +103,8 @@ public class MainClass {
 	}
 
 	public static void main(String[] args) {
-		Graph<Integer, String> myGraph1 = new Graph<>(true);
-		Graph<Integer, String> myGraph2 = new Graph<>(false);
+		Graph<Integer, String> myGraph1 = new Graph<>();
+		Graph<Integer, String> myGraph2 = new Graph<>();
 
 		generaGraph("networks/airports_UW.net");
 
