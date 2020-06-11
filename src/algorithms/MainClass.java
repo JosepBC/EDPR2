@@ -3,14 +3,13 @@ package algorithms;
 import java.io.File; // Import the File class
 import java.io.FileNotFoundException; // Import this class to handle errors
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Scanner; // Import the Scanner class to read text files
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.util.ArrayList;
 
-import dataStructures.Graph;
+import dataStructures.*;
 
 public class MainClass {
 
@@ -26,7 +25,6 @@ public class MainClass {
 			File myObj = new File(path);
 			Scanner myReader = new Scanner(myObj);
 			String lane = myReader.nextLine();
-			String[] words;
 			Pattern pattern = Pattern.compile("(\\w+)([0-9]*\\.?[0-9]*)");
 			Matcher matcher;
 			if (lane.split(" ")[0].equals("*Vertices")) {
@@ -82,9 +80,16 @@ public class MainClass {
 		aux.remove();
 		while (!cola.isEmpty()) {
 			// sacar adzacéncias del primero de la cola
-			// añadir las que no estén en la cola ya
+			for(EdgeT<String, String> node : graph.getLinks(cola.get(0))) {
+				// añadir las que no estén en la cola ya
+				if (!cola.contains(node.getEdgeVal())) {
+					cola.add(node.getEdgeVal());
+				}
+			}
 			// borrar el cabeza de cola de llista
+			llista.remove(cola.get(0));
 			// borrar el cabeza de cola de la cola
+			cola.remove(0);
 			NCC++;
 		}
 		return NCC;
