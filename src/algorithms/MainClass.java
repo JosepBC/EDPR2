@@ -138,7 +138,9 @@ public class MainClass {
 				insert.add(info[1].toString());
 				insert.add(info[2].toString());
 				writer.write(insert.stream().collect(Collectors.joining(",")));
-				
+				graph.removeRand();
+				graph.removeRand();
+				graph.removeRand();
 			}
 			writer.close();
 		} 
@@ -205,17 +207,17 @@ public class MainClass {
 	 * connexes de la xarxa, i de la mida de les dues components connexes més grans,
 	 * a mesura que anem extirpant nodes de la xarxa.
 	 */
-	private static void percoloracio(Graph<Integer, String> graph, Heap <Float> heap, int mode){
+	private static void percoloracio(Graph<String, String> myGraph1, Heap <Float> heap, int mode){
 		String path = "result.csv";
 		switch (mode) {
 		case 0:
-			randomAtack(graph, path);
+			randomAtack(myGraph1, path);
 			break;
 		case 1:
-			gradeAtack(graph, heap, path);
+			gradeAtack(myGraph1, heap, path);
 			break;
 		case 2:
-			strengthAtack(graph, heap, path);
+			strengthAtack(myGraph1, heap, path);
 			break;
 		}	
 	}
@@ -226,14 +228,12 @@ public class MainClass {
 
 		//generaGraph("networks/wtw2000-sym.net");
 		//myGraph1 = generaGraph("networks/airports_UW.net");
-		//myGraph1 = generaGraph("networks/wtw2000-sym.net");
+		myGraph1 = generaGraph("networks/wtw2000-sym.net");
 		//myGraph1 = generaGraph("networks/email_URV-edges_betw.net");
-		myGraph1 = generaGraph("networks/powergrid_USA-edges_betw.net");
-		Integer[] info = new Integer[3]; 
-		getGraphInfo(myGraph1, info);
-		System.out.println(info[0]);
-		System.out.println(info[1]);
-		System.out.println(info[2]);
+		//myGraph1 = generaGraph("networks/powergrid_USA-edges_betw.net");
+		//Integer[] info = new Integer[3]; 
+		//getGraphInfo(myGraph1, info);
+		percoloracio(myGraph1,new Heap<Float>(), 0);
 		
 		/*yGraph1.addNode(0);
 		myGraph1.addNode(20);
