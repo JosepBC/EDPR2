@@ -2,10 +2,13 @@ package algorithms;
 
 import java.io.File; // Import the File class
 import java.io.FileNotFoundException; // Import this class to handle errors
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Iterator;
-import java.util.Scanner; // Import the Scanner class to read text files
+import java.util.Scanner; // Import the Scanner class to read text file
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import java.util.regex.Matcher;
 import java.util.ArrayList;
 
@@ -72,23 +75,25 @@ public class MainClass {
 		}
 		return graph;
 	}
-	private static int BFS(Graph<String, String> graph, Set<String> llista) {
+	private static Float BFS(Graph<String, String> graph, Set<String> llista) {
 		ArrayList <String> cola = new ArrayList<String>();
+		ArrayList <String> elim = new ArrayList<String>();
 		Iterator<String> aux = llista.iterator();
-		int NCC = 0;
+		Float NCC = (float) 0;
 		cola.add(aux.next());
-		aux.remove();
 		while (!cola.isEmpty()) {
-			// sacar adzacéncias del primero de la cola
+			// sacar adyacéncias del primero de la cola
 			for(EdgeT<String, String> node : graph.getLinks(cola.get(0))) {
 				// añadir las que no estén en la cola ya
-				if (!cola.contains(node.getEdgeVal())) {
-					cola.add(node.getEdgeVal());
+				String nextNode = node.getNextNode();
+				if (!cola.contains(nextNode) && !elim.contains(nextNode)) {
+					cola.add(node.getNextNode());
 				}
 			}
 			// borrar el cabeza de cola de llista
 			llista.remove(cola.get(0));
 			// borrar el cabeza de cola de la cola
+			elim.add(cola.get(0));
 			cola.remove(0);
 			NCC++;
 		}
@@ -99,8 +104,8 @@ public class MainClass {
 	 * Detecció de components connexes utilitzant un algorisme d’exploració com els
 	 * explicats a classe.
 	 */
-	private static void getGraphInfo(Graph<String, String> graph, Integer[] info) {
-		int NCC = 0, GCC = 1, SLCC = 1, grau;
+	private static void getGraphInfo(Graph<String, String> graph, Float[] info) {
+		Float NCC = (float) 0, GCC = (float) 0, SLCC = (float) 0, grau;
 		Set<String> nodes = graph.getAllNodes();
 		while(!nodes.isEmpty()) {
 			grau = BFS(graph, nodes);
@@ -116,23 +121,103 @@ public class MainClass {
 		info[1] = GCC;
 		info[2] = SLCC;
 	}
+	private static void randomAtack(Graph<String, String> graph, String path) {
+		try {
+			Float  OP, numNodes = (float) graph.getnVertex();
+			Float[] info = new Float[3]; 
+			File result = new File(path);
+			FileWriter writer = new FileWriter(result);
+			writer.write("OP,NCC,GCC,SLCC\n");
+			
+			while(graph.getnElem() > 0) {
+				ArrayList <String> insert = new ArrayList<String>();
+				OP = numNodes / graph.getnElem();
+				insert.add(OP.toString());
+				getGraphInfo(graph, info);
+				insert.add(info[0].toString());
+				insert.add(info[1].toString());
+				insert.add(info[2].toString());
+				writer.write(insert.stream().collect(Collectors.joining(",")));
+				
+			}
+			writer.close();
+		} 
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	private static void gradeAtack(Graph<String, String> graph, Heap <Float> heap, String path) {
+		try {
+			Float  OP, numNodes = (float) graph.getnVertex();
+			Float[] info = new Float[3]; 
+			File result = new File(path);
+			FileWriter writer = new FileWriter(result);
+			writer.write("OP,NCC,GCC,SLCC\n");
+			
+			while(graph.getnElem() > 0) {
+				ArrayList <String> insert = new ArrayList<String>();
+				OP = numNodes / graph.getnElem();
+				insert.add(OP.toString());
+				getGraphInfo(graph, info);
+				insert.add(info[0].toString());
+				insert.add(info[1].toString());
+				insert.add(info[2].toString());
+				writer.write(insert.stream().collect(Collectors.joining(",")));
+				
+			}
+			writer.close();
+		} 
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	private static void strengthAtack(Graph<String, String> graph, Heap <Float> heap, String path) {
+		try {
+			Float  OP, numNodes = (float) graph.getnVertex();
+			Float[] info = new Float[3]; 
+			File result = new File(path);
+			FileWriter writer = new FileWriter(result);
+			writer.write("OP,NCC,GCC,SLCC\n");
+			
+			while(graph.getnElem() > 0) {
+				ArrayList <String> insert = new ArrayList<String>();
+				OP = numNodes / graph.getnElem();
+				insert.add(OP.toString());
+				getGraphInfo(graph, info);
+				insert.add(info[0].toString());
+				insert.add(info[1].toString());
+				insert.add(info[2].toString());
+				writer.write(insert.stream().collect(Collectors.joining(",")));
+				
+			}
+			writer.close();
+		} 
+		catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	/*
 	 * Anàlisi de percolació. Visualització de l’evolució del nombre de components
 	 * connexes de la xarxa, i de la mida de les dues components connexes més grans,
 	 * a mesura que anem extirpant nodes de la xarxa.
 	 */
-	private static void percoloracio(Graph<Integer, String> graph, int mode) {
-
+	private static void percoloracio(Graph<Integer, String> graph, Heap <Float> heap, int mode){
+		String path = "result.csv";
 		switch (mode) {
 		case 0:
+			randomAtack(graph, path);
 			break;
 		case 1:
+			gradeAtack(graph, heap, path);
 			break;
 		case 2:
+			strengthAtack(graph, heap, path);
 			break;
-		}
-
+		}	
 	}
 
 	public static void main(String[] args) {
@@ -141,7 +226,9 @@ public class MainClass {
 
 		//generaGraph("networks/wtw2000-sym.net");
 		//myGraph1 = generaGraph("networks/airports_UW.net");
-		myGraph1 = generaGraph("networks/wtw2000-sym.net");
+		//myGraph1 = generaGraph("networks/wtw2000-sym.net");
+		//myGraph1 = generaGraph("networks/email_URV-edges_betw.net");
+		myGraph1 = generaGraph("networks/powergrid_USA-edges_betw.net");
 		Integer[] info = new Integer[3]; 
 		getGraphInfo(myGraph1, info);
 		System.out.println(info[0]);
