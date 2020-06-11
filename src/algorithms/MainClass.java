@@ -142,8 +142,8 @@ public class MainClass {
 				writer.write(insert.stream().collect(Collectors.joining(",")));
 				writer.write("\n");
 				graph.removeRand();
-				graph.removeRand();
-				graph.removeRand();
+				//graph.removeRand();
+				//graph.removeRand();
 			}
 			writer.close();
 		} 
