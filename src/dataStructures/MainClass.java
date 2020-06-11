@@ -16,6 +16,10 @@ public class MainClass {
 		
 		System.out.println("Pre-remove: ");
 		System.out.println(myGraph+"\n");
+		Graph <Integer, String> copy = myGraph.clone();
+		copy.removeNodeIDX(1);
+		System.out.println("Copy:\n"+copy+"\n");
+		System.out.println("Original:\n"+myGraph+"\n");
 		
 		System.out.println("Get links of node with content 10:");
 		LinkedList<EdgeT<Integer, String>> links = myGraph.getLinks(10);
@@ -39,6 +43,7 @@ public class MainClass {
 		System.out.println("Remove rand result: " + myGraph.removeRand());
 		System.out.println("New nodes of the graph: ");
 		System.out.println(myGraph.getAllNodes());
+
 
 	}
 
