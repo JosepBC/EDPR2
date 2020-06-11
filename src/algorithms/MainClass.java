@@ -3,10 +3,12 @@ package algorithms;
 import java.io.File; // Import the File class
 import java.io.FileNotFoundException; // Import this class to handle errors
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Scanner; // Import the Scanner class to read text files
 import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.ArrayList;
 
 import dataStructures.Graph;
 
@@ -72,14 +74,20 @@ public class MainClass {
 		}
 		return graph;
 	}
-	private static int DFS(Graph<String, String> graph, String inici, Set<String> llista) {
-		/*
-		 * crear cola
-		 * borrar inici de llista
-		 * sacar adyacencias de inici
-		 * 
-		 */
-		return 0;
+	private static int BFS(Graph<String, String> graph, Set<String> llista) {
+		ArrayList <String> cola = new ArrayList<String>();
+		Iterator<String> aux = llista.iterator();
+		int NCC = 0;
+		cola.add(aux.next());
+		aux.remove();
+		while (!cola.isEmpty()) {
+			// sacar adzacéncias del primero de la cola
+			// añadir las que no estén en la cola ya
+			// borrar el cabeza de cola de llista
+			// borrar el cabeza de cola de la cola
+			NCC++;
+		}
+		return NCC;
 	}
 
 	/*
@@ -89,9 +97,8 @@ public class MainClass {
 	private static void getGraphInfo(Graph<String, String> graph, Integer[] info) {
 		int NCC = 0, GCC = 1, SLCC = 1, grau;
 		Set<String> nodes = graph.getAllNodes();
-		System.out.println(nodes.size());
 		while(!nodes.isEmpty()) {
-			grau = DFS(graph,nodes.iterator().next(), nodes);
+			grau = BFS(graph, nodes);
 			
 			if (grau >= GCC) {
 				SLCC = GCC;
