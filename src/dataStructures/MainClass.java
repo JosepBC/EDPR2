@@ -24,6 +24,10 @@ public class MainClass {
 		}
 		System.out.println(links+"\n");
 		
+		System.out.println("Get links of node with content 1000:");
+		LinkedList<EdgeT<Integer, String>> links2 = myGraph.getLinks(1000);
+		System.out.println(links2+"\n");
+		
 		myGraph.removeNode(10);
 		System.out.println("Post remove node with content 10: ");
 		System.out.println(myGraph+"\n");
