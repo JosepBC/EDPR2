@@ -133,7 +133,7 @@ public class MainClass {
 				ArrayList <String> insert = new ArrayList<String>();
 				OP = numNodes / graph.getnElem();
 				insert.add(OP.toString());
-				getGraphInfo(graph, info);
+				getGraphInfo(graph.clone(), info);
 				insert.add(info[0].toString());
 				insert.add(info[1].toString());
 				insert.add(info[2].toString());
@@ -166,8 +166,7 @@ public class MainClass {
 				insert.add(info[0].toString());
 				insert.add(info[1].toString());
 				insert.add(info[2].toString());
-				writer.write(insert.stream().collect(Collectors.joining(",")));
-				
+				writer.write(insert.stream().collect(Collectors.joining(","))+"\n");
 			}
 			writer.close();
 		} 
@@ -192,8 +191,7 @@ public class MainClass {
 				insert.add(info[0].toString());
 				insert.add(info[1].toString());
 				insert.add(info[2].toString());
-				writer.write(insert.stream().collect(Collectors.joining(",")));
-				
+				writer.write(insert.stream().collect(Collectors.joining(","))+"\n");
 			}
 			writer.close();
 		} 
@@ -212,13 +210,19 @@ public class MainClass {
 		String path = "result.csv";
 		switch (mode) {
 		case 0:
+			System.out.println("Starting random attack....");
 			randomAtack(myGraph1, path);
+			System.out.println("Random attack done");
 			break;
 		case 1:
+			System.out.println("Starting grad attack....");
 			gradeAtack(myGraph1, heap, path);
+			System.out.println("Random attack done");
 			break;
 		case 2:
+			System.out.println("Starting strength attack....");
 			strengthAtack(myGraph1, heap, path);
+			System.out.println("Random attack done");
 			break;
 		}	
 	}

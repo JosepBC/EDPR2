@@ -23,6 +23,13 @@ public class Graph<NodeData, EdgeData> {
 		this.nVertex = 0;
 	}
 	
+	private Graph(int nElem, int nVertex, LinkedHashMap<NodeData, LinkedList<EdgeT<NodeData, EdgeData>>> graph) {
+		super();
+		this.nElem = nElem;
+		this.nVertex = nVertex;
+		this.graph = new LinkedHashMap<NodeData, LinkedList<EdgeT<NodeData, EdgeData>>>(graph);
+	}
+	
 	/**
 	 * Afegeix un node al graf amb el valor passat per paràmetre.
 	 * @param val
@@ -158,6 +165,11 @@ public class Graph<NodeData, EdgeData> {
 		if (nVertex != other.nVertex)
 			return false;
 		return true;
+	}
+
+	@Override
+	public Graph<NodeData, EdgeData> clone() {
+		return new Graph<NodeData, EdgeData>(this.nElem, this.nVertex, this.graph);
 	}
 	
 	

@@ -59,6 +59,11 @@ public class EdgeT<NodeData, EdgeData> {
 		return true;
 	}
 
+	@Override
+	public EdgeT<NodeData, EdgeData> clone(){
+		return new EdgeT<NodeData, EdgeData>(this.edgeVal, this.nextNode);
+	}
 	
-			
+	
+
 }
