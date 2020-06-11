@@ -138,6 +138,7 @@ public class MainClass {
 				insert.add(info[1].toString());
 				insert.add(info[2].toString());
 				writer.write(insert.stream().collect(Collectors.joining(",")));
+				System.out.println(graph.getnElem());
 				graph.removeRand();
 				graph.removeRand();
 				graph.removeRand();
