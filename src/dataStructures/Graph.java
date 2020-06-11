@@ -12,75 +12,7 @@ import java.util.*;
 public class Graph<NodeData, EdgeData> {
 	int nElem;
 	int nVertex;
-	private LinkedHashMap<NodeData, LinkedList<EdgeT>> graph = new LinkedHashMap<>();
-	
-	/**
-	 * Petita classe per guardar l'informació d'un vèrtex i un enllaç
-	 * @author Josep Bello
-	 * @author Lautaro Russo
-	 *
-	 */
-	private class EdgeT {
-		private EdgeData edgeVal;
-		private NodeData nextNode;
-		
-		public EdgeT(EdgeData edge, NodeData linkedNode) {
-			this.edgeVal = edge;
-			this.nextNode = linkedNode;
-		}
-		
-		public EdgeData getEdgeVal() {
-			return this.edgeVal;
-		}
-		
-		public NodeData getNextNode() {
-			return this.nextNode;
-		}
-
-		@Override
-		public String toString() {
-			return "EdgeT [edgeVal=" + edgeVal + ", nextNode=" + nextNode + "]";
-		}
-
-		@Override
-		public int hashCode() {
-			final int prime = 31;
-			int result = 1;
-			result = prime * result + getEnclosingInstance().hashCode();
-			result = prime * result + ((edgeVal == null) ? 0 : edgeVal.hashCode());
-			result = prime * result + ((nextNode == null) ? 0 : nextNode.hashCode());
-			return result;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (this == obj)
-				return true;
-			if (obj == null)
-				return false;
-			if (getClass() != obj.getClass())
-				return false;
-			EdgeT other = (EdgeT) obj;
-			if (!getEnclosingInstance().equals(other.getEnclosingInstance()))
-				return false;
-			if (edgeVal == null) {
-				if (other.edgeVal != null)
-					return false;
-			} else if (!edgeVal.equals(other.edgeVal))
-				return false;
-			if (nextNode == null) {
-				if (other.nextNode != null)
-					return false;
-			} else if (!nextNode.equals(other.nextNode))
-				return false;
-			return true;
-		}
-
-		private Graph getEnclosingInstance() {
-			return Graph.this;
-		}
-				
-	}
+	private LinkedHashMap<NodeData, LinkedList<EdgeT<NodeData, EdgeData>>> graph = new LinkedHashMap<>();
 	/**
 	 * 
 	 * @param repeat Determina si volem afegir l'enllaç A->B i B->A o no
@@ -97,7 +29,7 @@ public class Graph<NodeData, EdgeData> {
 	 * @return
 	 */
 	public void addNode(NodeData val) {
-		graph.put(val, new LinkedList<EdgeT>());
+		graph.put(val, new LinkedList<EdgeT<NodeData, EdgeData>>());
 		nElem++;
 	}
 	
@@ -115,9 +47,9 @@ public class Graph<NodeData, EdgeData> {
 		if(!graph.containsKey(valB))
 			this.addNode(valB);
 		
-		EdgeT edge1 = new EdgeT(edgeData, valB);
+		EdgeT<NodeData, EdgeData> edge1 = new EdgeT(edgeData, valB);
 		graph.get(valA).add(edge1);
-		EdgeT edge2 = new EdgeT(edgeData, valA);
+		EdgeT<NodeData, EdgeData> edge2 = new EdgeT(edgeData, valA);
 		graph.get(valB).add(edge2);
 	
 		nVertex++;
@@ -148,11 +80,11 @@ public class Graph<NodeData, EdgeData> {
 	 * @param val Valor del node a eliminar
 	 */
 	public void removeNode(NodeData val) {
-		LinkedList<EdgeT> edges = this.graph.remove(val);
+		LinkedList<EdgeT<NodeData, EdgeData>> edges = this.graph.remove(val);
 		if(edges != null) {
 			nElem--;
-			for(EdgeT edge : edges) {
-				EdgeT toRemove = new EdgeT(edge.getEdgeVal(), val);
+			for(EdgeT<NodeData, EdgeData> edge : edges) {
+				EdgeT<NodeData, EdgeData> toRemove = new EdgeT(edge.getEdgeVal(), val);
 				this.graph.get(edge.getNextNode()).remove(toRemove);
 				nVertex--;
 			}
@@ -164,7 +96,7 @@ public class Graph<NodeData, EdgeData> {
 	 * @param node
 	 * @return Els enllaços o null si no existeix el node passat
 	 */
-	public LinkedList<EdgeT> getLinks(NodeData node) {
+	public LinkedList<EdgeT<NodeData, EdgeData>> getLinks(NodeData node) {
 		return graph.get(node);
 	}
 

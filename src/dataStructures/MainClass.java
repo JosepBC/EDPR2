@@ -1,4 +1,6 @@
 package dataStructures;
+import java.util.LinkedList;
+import java.util.Set;
 
 public class MainClass {
 
@@ -15,15 +17,21 @@ public class MainClass {
 		System.out.println("Pre-remove: ");
 		System.out.println(myGraph+"\n");
 		
-		System.out.println("Get links of node with content 0:");
-		System.out.println(myGraph.getLinks(0)+"\n");
+		System.out.println("Get links of node with content 10:");
+		LinkedList<EdgeT<Integer, String>> links = myGraph.getLinks(10);
+		for(EdgeT<Integer, String> edge : links) {
+			System.out.println(edge);
+		}
+		System.out.println(links+"\n");
 		
 		myGraph.removeNode(10);
 		System.out.println("Post remove node with content 10: ");
 		System.out.println(myGraph+"\n");
 		
 		System.out.println("All nodes: ");
-		System.out.println(myGraph.getAllNodes());	
+		Set<Integer> edges = myGraph.getAllNodes();
+		System.out.println(edges);	
+
 	}
 
 }
