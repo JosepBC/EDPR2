@@ -34,7 +34,11 @@ public class MainClass {
 		
 		System.out.println("All nodes: ");
 		Set<Integer> edges = myGraph.getAllNodes();
-		System.out.println(edges);	
+		System.out.println(edges+"\n");	
+		
+		System.out.println("Remove rand result: " + myGraph.removeRand());
+		System.out.println("New nodes of the graph: ");
+		System.out.println(myGraph.getAllNodes());
 
 	}
 

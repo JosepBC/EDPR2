@@ -76,6 +76,18 @@ public class Graph<NodeData, EdgeData> {
 	}
 	
 	/**
+	 * Elimina un aleatori, i totes les arestes que apunten a aquest.
+	 * @param idx Índex d'inserció, començant per 1
+	 */
+	public boolean removeRand() {
+		if(nElem == 0) return false;
+		Object[] keys = this.graph.keySet().toArray();
+		Random rand = new Random();
+		removeNode((NodeData)keys[rand.nextInt(nElem)]);
+		return true;
+	}
+	
+	/**
 	 * Elimina el node passat per paràmetre, i totes les seves arestes.
 	 * @param val Valor del node a eliminar
 	 */
