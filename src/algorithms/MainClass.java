@@ -123,7 +123,8 @@ public class MainClass {
 	}
 	private static void randomAtack(Graph<String, String> graph, String path) {
 		try {
-			Float  OP, numNodes = (float) graph.getnVertex();
+			Float  OP, NCC = (float) 0;
+			Float numNodes = (float) graph.getnElem();
 			Float[] info = new Float[3]; 
 			File result = new File(path);
 			FileWriter writer = new FileWriter(result);
@@ -131,14 +132,15 @@ public class MainClass {
 			
 			while(graph.getnElem() > 0) {
 				ArrayList <String> insert = new ArrayList<String>();
-				OP = numNodes / graph.getnElem();
+				OP = graph.getnElem() / numNodes;
 				insert.add(OP.toString());
 				getGraphInfo(graph.clone(), info);
-				insert.add(info[0].toString());
-				insert.add(info[1].toString());
-				insert.add(info[2].toString());
+				NCC = info[0]+(numNodes-graph.getnElem());
+				insert.add(((Float)(NCC/numNodes)).toString());
+				insert.add(((Float)(info[1]/numNodes)).toString());
+				insert.add(((Float)(info[2]/numNodes)).toString());
 				writer.write(insert.stream().collect(Collectors.joining(",")));
-				System.out.println(graph.getnElem());
+				writer.write("\n");
 				graph.removeRand();
 				graph.removeRand();
 				graph.removeRand();
@@ -166,7 +168,8 @@ public class MainClass {
 				insert.add(info[0].toString());
 				insert.add(info[1].toString());
 				insert.add(info[2].toString());
-				writer.write(insert.stream().collect(Collectors.joining(","))+"\n");
+				writer.write(insert.stream().collect(Collectors.joining(",")));
+				
 			}
 			writer.close();
 		} 
@@ -182,16 +185,18 @@ public class MainClass {
 			File result = new File(path);
 			FileWriter writer = new FileWriter(result);
 			writer.write("OP,NCC,GCC,SLCC\n");
-			
+			System.out.println(graph.getnElem());
+			System.out.println(graph.getnVertex());
 			while(graph.getnElem() > 0) {
 				ArrayList <String> insert = new ArrayList<String>();
 				OP = numNodes / graph.getnElem();
 				insert.add(OP.toString());
-				getGraphInfo(graph, info);
+				getGraphInfo(graph.clone(), info);
 				insert.add(info[0].toString());
 				insert.add(info[1].toString());
 				insert.add(info[2].toString());
-				writer.write(insert.stream().collect(Collectors.joining(","))+"\n");
+				writer.write(insert.stream().collect(Collectors.joining(",")));
+				
 			}
 			writer.close();
 		} 
@@ -210,19 +215,13 @@ public class MainClass {
 		String path = "result.csv";
 		switch (mode) {
 		case 0:
-			System.out.println("Starting random attack....");
 			randomAtack(myGraph1, path);
-			System.out.println("Random attack done");
 			break;
 		case 1:
-			System.out.println("Starting grad attack....");
 			gradeAtack(myGraph1, heap, path);
-			System.out.println("Random attack done");
 			break;
 		case 2:
-			System.out.println("Starting strength attack....");
 			strengthAtack(myGraph1, heap, path);
-			System.out.println("Random attack done");
 			break;
 		}	
 	}
@@ -232,8 +231,8 @@ public class MainClass {
 		//Graph<Integer, String> myGraph2 = new Graph<>();
 
 		//generaGraph("networks/wtw2000-sym.net");
-		//myGraph1 = generaGraph("networks/airports_UW.net");
-		myGraph1 = generaGraph("networks/wtw2000-sym.net");
+		myGraph1 = generaGraph("networks/airports_UW.net");
+		//myGraph1 = generaGraph("networks/wtw2000-sym.net");
 		//myGraph1 = generaGraph("networks/email_URV-edges_betw.net");
 		//myGraph1 = generaGraph("networks/powergrid_USA-edges_betw.net");
 		//Integer[] info = new Integer[3]; 
