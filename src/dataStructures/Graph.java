@@ -56,7 +56,7 @@ public class Graph<NodeData, EdgeData> {
 	}
 	
 	/**
-	 * Elimina una aresta passant els index dels nodes que linka.
+	 * Afegeix una aresta passant els index dels nodes que linka.
 	 * @param idx1 Índex d'un node
 	 * @param idx2 Índex de l'altre node
 	 * @param edgeData Contingut de l'aresta
@@ -84,7 +84,7 @@ public class Graph<NodeData, EdgeData> {
 		if(edges != null) {
 			nElem--;
 			for(EdgeT<NodeData, EdgeData> edge : edges) {
-				EdgeT<NodeData, EdgeData> toRemove = new EdgeT(edge.getEdgeVal(), val);
+				EdgeT<NodeData, EdgeData> toRemove = new EdgeT<NodeData, EdgeData>(edge.getEdgeVal(), val);
 				this.graph.get(edge.getNextNode()).remove(toRemove);
 				nVertex--;
 			}
@@ -94,9 +94,14 @@ public class Graph<NodeData, EdgeData> {
 	/**
 	 * Operació per obtenir tots els enllaços del node passat per paràmetre. Null si no existeix
 	 * @param node
-	 * @return Els enllaços o null si no existeix el node passat
+	 * @return Els enllaços o una llista buida si no existeix el node buscat o el node buscat te com a enllaços null
 	 */
 	public LinkedList<EdgeT<NodeData, EdgeData>> getLinks(NodeData node) {
+		LinkedList<EdgeT<NodeData, EdgeData>> links = graph.get(node);
+		if(links == null) {
+			  return new LinkedList<EdgeT<NodeData, EdgeData>>(); 
+		}
+		
 		return graph.get(node);
 	}
 
