@@ -215,6 +215,7 @@ public class MainClass {
 		String path = "result.csv";
 		switch (mode) {
 		case 0:
+			System.out.println("esto es una manualidad art atack");
 			randomAtack(myGraph1, path);
 			break;
 		case 1:
