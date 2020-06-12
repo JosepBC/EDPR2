@@ -5,7 +5,7 @@ import java.util.Set;
 public class MainClass {
 
 	public static void main(String[] args) {
-		Graph <Integer, String> myGraph = new Graph<>();
+		/*Graph <Integer, String> myGraph = new Graph<>();
 		
 		myGraph.addNode(10);
 		myGraph.addNode(20);
@@ -44,7 +44,16 @@ public class MainClass {
 		System.out.println("New nodes of the graph: ");
 		System.out.println(myGraph.getAllNodes());
 
-
+*/
+		
+		
+		MaxHeap<Integer> myHeap = new MaxHeap<>();
+		myHeap.insert(1);
+		myHeap.insert(2);
+		myHeap.insert(3);
+		myHeap.insert(4);
+		myHeap.print();
+		myHeap.coolPrint();
 	}
 
 }
