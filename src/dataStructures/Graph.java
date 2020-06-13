@@ -103,7 +103,7 @@ public class Graph<NodeData, EdgeData> {
 		if(edges != null) {
 			nElem--;
 			for(EdgeT<NodeData, EdgeData> edge : edges) {
-				EdgeT<NodeData, EdgeData> toRemove = new EdgeT(edge.getEdgeVal(), val);
+				EdgeT<NodeData, EdgeData> toRemove = new EdgeT<>(edge.getEdgeVal(), val);
 				this.graph.get(edge.getNextNode()).remove(toRemove);
 				nVertex--;
 			}
