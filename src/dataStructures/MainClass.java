@@ -46,14 +46,20 @@ public class MainClass {
 
 */
 		
-		
+		/*
 		MaxHeap<Integer> myHeap = new MaxHeap<>();
 		myHeap.insert(1);
 		myHeap.insert(2);
 		myHeap.insert(3);
 		myHeap.insert(4);
 		myHeap.print();
-		myHeap.coolPrint();
+		myHeap.coolPrint();*/
+		
+		NodeT<String> oneNode = new NodeT<String>("Hola", (float)10.0);
+		NodeT<String> anotherNode = new NodeT<String>("Hola2", (float)12.0);
+		System.out.println(oneNode.getContentOfNode());
+		System.out.println(oneNode.getHeapKey());
+		System.out.println(oneNode.compareTo(anotherNode));
 	}
 
 }
