@@ -45,21 +45,31 @@ public class MainClass {
 		System.out.println(myGraph.getAllNodes());
 
 */
+/*
+		NodeT<String> oneNode = new NodeT<String>("Hola", (float)10.0);
+		NodeT<String> anotherNode = new NodeT<String>("Hola2", (float)12.0);*/
 		
-		/*
+		
 		MaxHeap<Integer> myHeap = new MaxHeap<>();
-		myHeap.insert(1);
+		myHeap.insert(20);
+		myHeap.insert(15);
 		myHeap.insert(2);
-		myHeap.insert(3);
-		myHeap.insert(4);
+		myHeap.insert(14);
+		myHeap.insert(10);
+		myHeap.print();
+		myHeap.coolPrint();
+		
+
+		System.out.println("Root: "+myHeap.extractRoot());
+		myHeap.print();
+		myHeap.coolPrint();
+
+		//myHeap.coolPrint();
+		/*
+		Integer root = myHeap.extractRoot();
+		System.out.println("Root: "+root);
 		myHeap.print();
 		myHeap.coolPrint();*/
-		
-		NodeT<String> oneNode = new NodeT<String>("Hola", (float)10.0);
-		NodeT<String> anotherNode = new NodeT<String>("Hola2", (float)12.0);
-		System.out.println(oneNode.getContentOfNode());
-		System.out.println(oneNode.getHeapKey());
-		System.out.println(oneNode.compareTo(anotherNode));
 	}
 
 }
