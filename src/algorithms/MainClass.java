@@ -152,7 +152,7 @@ public class MainClass {
 			e.printStackTrace();
 		}
 	}
-	private static void gradeAtack(Graph<String, String> graph, MaxHeap <Float> heap, String path) {
+	private static void heapAtack(Graph<String, String> graph, MaxHeap<NodeT<String>> heap, String path) {
 		try {
 			Float  OP, numNodes = (float) graph.getnVertex();
 			Float[] info = new Float[3]; 
@@ -169,34 +169,7 @@ public class MainClass {
 				insert.add(info[1].toString());
 				insert.add(info[2].toString());
 				writer.write(insert.stream().collect(Collectors.joining(",")));
-				
-			}
-			writer.close();
-		} 
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	private static void strengthAtack(Graph<String, String> graph, MaxHeap <Float> heap, String path) {
-		try {
-			Float  OP, numNodes = (float) graph.getnVertex();
-			Float[] info = new Float[3]; 
-			File result = new File(path);
-			FileWriter writer = new FileWriter(result);
-			writer.write("OP,NCC,GCC,SLCC\n");
-			System.out.println(graph.getnElem());
-			System.out.println(graph.getnVertex());
-			while(graph.getnElem() > 0) {
-				ArrayList <String> insert = new ArrayList<String>();
-				OP = numNodes / graph.getnElem();
-				insert.add(OP.toString());
-				getGraphInfo(graph.clone(), info);
-				insert.add(info[0].toString());
-				insert.add(info[1].toString());
-				insert.add(info[2].toString());
-				writer.write(insert.stream().collect(Collectors.joining(",")));
-				
+				graph.removeNode(heap.extractRoot().getContentOfNode());
 			}
 			writer.close();
 		} 
@@ -211,18 +184,18 @@ public class MainClass {
 	 * connexes de la xarxa, i de la mida de les dues components connexes més grans,
 	 * a mesura que anem extirpant nodes de la xarxa.
 	 */
-	private static void percoloracio(Graph<String, String> myGraph1, MaxHeap <Float> heap, int mode){
+	private static void percoloracio(Graph<String, String> graph, int mode){
 		String path = "result.csv";
 		switch (mode) {
 		case 0:
 			System.out.println("esto es una manualidad art atack");
-			randomAtack(myGraph1, path);
+			randomAtack(graph, path);
 			break;
 		case 1:
-			gradeAtack(myGraph1, heap, path);
+			heapAtack(graph, graph.genGradHeap(), path);
 			break;
 		case 2:
-			strengthAtack(myGraph1, heap, path);
+			heapAtack(graph, graph.genStrHeap(), path);
 			break;
 		}	
 	}
@@ -233,12 +206,14 @@ public class MainClass {
 
 		//generaGraph("networks/wtw2000-sym.net");
 		myGraph1 = generaGraph("networks/airports_UW.net");
+		
+		myGraph1.genGradHeap().coolPrint();
 		//myGraph1 = generaGraph("networks/wtw2000-sym.net");
 		//myGraph1 = generaGraph("networks/email_URV-edges_betw.net");
 		//myGraph1 = generaGraph("networks/powergrid_USA-edges_betw.net");
 		//Integer[] info = new Integer[3]; 
 		//getGraphInfo(myGraph1, info);
-		percoloracio(myGraph1,new MaxHeap<Float>(), 0);
+		percoloracio(myGraph1, 1);
 		
 		/*yGraph1.addNode(0);
 		myGraph1.addNode(20);

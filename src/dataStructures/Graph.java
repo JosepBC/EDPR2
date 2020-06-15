@@ -172,6 +172,30 @@ public class Graph<NodeData, EdgeData> {
 		return new Graph<NodeData, EdgeData>(this.nElem, this.nVertex, this.graph);
 	}
 	
+	public MaxHeap<NodeT<NodeData>> genGradHeap() {
+		MaxHeap<NodeT<NodeData>> heap = new MaxHeap<NodeT<NodeData>>();
+		Set<NodeData> nodes = this.getAllNodes();
+		for (NodeData content : nodes) {
+			LinkedList<EdgeT<NodeData, EdgeData>> links = getLinks(content);
+			Float key = (float)links.size();
+			heap.insert(new NodeT<NodeData>(content, key));
+		}
+		return heap;
+	}
+	
+	public MaxHeap<NodeT<NodeData>> genStrHeap() {
+		MaxHeap<NodeT<NodeData>> heap = new MaxHeap<NodeT<NodeData>>();
+		Set<NodeData> nodes = this.getAllNodes();
+		for (NodeData content : nodes) {
+			LinkedList<EdgeT<NodeData, EdgeData>> links = getLinks(content);
+			Float key = (float)0;
+			for (EdgeT<NodeData, EdgeData> link : links) {
+				key += (float) link.getEdgeVal();
+			}
+			heap.insert(new NodeT<NodeData>(content, key));
+		}
+		return heap;
+	}
 	
 
 }

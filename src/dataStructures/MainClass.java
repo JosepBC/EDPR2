@@ -49,7 +49,6 @@ public class MainClass {
 		NodeT<String> oneNode = new NodeT<String>("Hola", (float)10.0);
 		NodeT<String> anotherNode = new NodeT<String>("Hola2", (float)12.0);*/
 		
-		
 		MaxHeap<Integer> myHeap = new MaxHeap<>();
 		myHeap.insert(20);
 		myHeap.insert(15);
