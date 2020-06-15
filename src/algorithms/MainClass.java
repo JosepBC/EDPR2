@@ -5,6 +5,7 @@ import java.io.FileNotFoundException; // Import this class to handle errors
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Scanner; // Import the Scanner class to read text file
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -21,9 +22,9 @@ public class MainClass {
 	 * permet emmagatzemar l’estructura de la xarxa, així com els atributs als nodes
 	 * i a les arestes. La xarxa es suposa no dirigida.
 	 */
-	private static Graph<String, String> generaGraph(String path) {
-		Graph<String, String> graph = new Graph<>();
-
+	private static Graph<String, Float> generaGraph(String path) {
+		Graph<String, Float> graph = new Graph<>();
+		
 		try {
 			File myObj = new File(path);
 			Scanner myReader = new Scanner(myObj);
@@ -59,7 +60,7 @@ public class MainClass {
 					matcher.find();
 					Integer B = Integer.parseInt(matcher.group());
 					matcher.find();
-					graph.addEdgeIDX(A, B, matcher.group());
+					graph.addEdgeIDX(A, B, Float.parseFloat(matcher.group()));
 				}
 			}
 			else { 
@@ -75,7 +76,7 @@ public class MainClass {
 		}
 		return graph;
 	}
-	private static Float BFS(Graph<String, String> graph, Set<String> llista) {
+	private static Float BFS(Graph<String, Float> graph, Set<String> llista) {
 		ArrayList <String> cola = new ArrayList<String>();
 		ArrayList <String> elim = new ArrayList<String>();
 		Iterator<String> aux = llista.iterator();
@@ -83,7 +84,7 @@ public class MainClass {
 		cola.add(aux.next());
 		while (!cola.isEmpty()) {
 			// sacar adyacéncias del primero de la cola
-			for(EdgeT<String, String> node : graph.getLinks(cola.get(0))) {
+			for(EdgeT<String, Float> node : graph.getLinks(cola.get(0))) {
 				// añadir las que no estén en la cola ya
 				String nextNode = node.getNextNode();
 				if (!cola.contains(nextNode) && !elim.contains(nextNode)) {
@@ -104,7 +105,7 @@ public class MainClass {
 	 * Detecció de components connexes utilitzant un algorisme d’exploració com els
 	 * explicats a classe.
 	 */
-	private static void getGraphInfo(Graph<String, String> graph, Float[] info) {
+	private static void getGraphInfo(Graph<String, Float> graph, Float[] info) {
 		Float NCC = (float) 0, GCC = (float) 0, SLCC = (float) 0, grau;
 		Set<String> nodes = graph.getAllNodes();
 		while(!nodes.isEmpty()) {
@@ -121,29 +122,27 @@ public class MainClass {
 		info[1] = GCC;
 		info[2] = SLCC;
 	}
-	private static void randomAtack(Graph<String, String> graph, String path) {
+	private static void randomAtack(Graph<String, Float> graph, String path) {
 		try {
 			Float  OP, NCC = (float) 0;
-			Float numNodes = (float) graph.getnElem();
+			Float numNodes = (float) graph.getnNodes();
 			Float[] info = new Float[3]; 
 			File result = new File(path);
 			FileWriter writer = new FileWriter(result);
 			writer.write("OP,NCC,GCC,SLCC\n");
-			
-			while(graph.getnElem() > 0) {
+			while(graph.getnNodes() > 0) {
 				ArrayList <String> insert = new ArrayList<String>();
-				OP = graph.getnElem() / numNodes;
+				OP = graph.getnNodes() / numNodes;
 				insert.add(OP.toString());
 				getGraphInfo(graph.clone(), info);
-				NCC = info[0]+(numNodes-graph.getnElem());
+				NCC = info[0]+(numNodes-graph.getnNodes());
 				insert.add(((Float)(NCC/numNodes)).toString());
 				insert.add(((Float)(info[1]/numNodes)).toString());
 				insert.add(((Float)(info[2]/numNodes)).toString());
 				writer.write(insert.stream().collect(Collectors.joining(",")));
 				writer.write("\n");
+				//System.out.println(graph);
 				graph.removeRand();
-				//graph.removeRand();
-				//graph.removeRand();
 			}
 			writer.close();
 		} 
@@ -152,24 +151,28 @@ public class MainClass {
 			e.printStackTrace();
 		}
 	}
-	private static void heapAtack(Graph<String, String> graph, MaxHeap<NodeT<String>> heap, String path) {
+	private static void heapAtack(Graph<String, Float> graph, MaxHeap<NodeT<String>> heap, String path) {
 		try {
-			Float  OP, numNodes = (float) graph.getnVertex();
+			Float  OP, numNodes = (float) graph.getnNodes(), NCC = (float)0;
 			Float[] info = new Float[3]; 
 			File result = new File(path);
 			FileWriter writer = new FileWriter(result);
 			writer.write("OP,NCC,GCC,SLCC\n");
 			
-			while(graph.getnElem() > 0) {
+			while(graph.getnNodes() > 0) {
 				ArrayList <String> insert = new ArrayList<String>();
-				OP = numNodes / graph.getnElem();
+				OP = graph.getnNodes() / numNodes;
 				insert.add(OP.toString());
-				getGraphInfo(graph, info);
-				insert.add(info[0].toString());
-				insert.add(info[1].toString());
-				insert.add(info[2].toString());
+				getGraphInfo(graph.clone(), info);
+				NCC = info[0]+(numNodes-graph.getnNodes());
+				insert.add(((Float)(NCC/numNodes)).toString());
+				insert.add(((Float)(info[1]/numNodes)).toString());
+				insert.add(((Float)(info[2]/numNodes)).toString());
 				writer.write(insert.stream().collect(Collectors.joining(",")));
+				writer.write("\n");
 				graph.removeNode(heap.extractRoot().getContentOfNode());
+				//System.out.println("Graph: "+graph.getnElem());
+				//System.out.println("Heap: "+heap.getnElem()+"\n");
 			}
 			writer.close();
 		} 
@@ -179,66 +182,203 @@ public class MainClass {
 		}
 	}
 
+	private static MaxHeap<NodeT<String>> genGradHeap(Graph<String, Float> graph) {
+		MaxHeap<NodeT<String>> heap = new MaxHeap<>();
+		Set<String> nodes = graph.getAllNodes();
+		for (String content : nodes) {
+			heap.insert(new NodeT<String>(content, (float)graph.getLinks(content).size()));
+		}
+		
+		return heap;
+	}
+	
+	private static MaxHeap<NodeT<String>> genStrHeap(Graph<String, Float> graph) {
+		MaxHeap<NodeT<String>> heap = new MaxHeap<>();
+		Set<String> nodes = graph.getAllNodes();
+		for (String content : nodes) {
+			Float key = (float) 0;
+			LinkedList<EdgeT<String, Float>> links = graph.getLinks(content);
+			for(EdgeT<String, Float> link : links) {
+				key += link.getEdgeVal();
+			}
+			heap.insert(new NodeT<String>(content, key));
+		}
+		
+		return heap;
+	}
+	
 	/*
 	 * Anàlisi de percolació. Visualització de l’evolució del nombre de components
 	 * connexes de la xarxa, i de la mida de les dues components connexes més grans,
 	 * a mesura que anem extirpant nodes de la xarxa.
 	 */
-	private static void percoloracio(Graph<String, String> graph, int mode){
-		String path = "result.csv";
+	private static void percoloracio(Graph<String, Float> graph, int mode, String path){
 		switch (mode) {
-		case 0:
-			System.out.println("esto es una manualidad art atack");
-			randomAtack(graph, path);
-			break;
-		case 1:
-			heapAtack(graph, graph.genGradHeap(), path);
-			break;
-		case 2:
-			heapAtack(graph, graph.genStrHeap(), path);
-			break;
+			case 0:
+				System.out.println("Iniciando random attack....");
+				randomAtack(graph, path);
+				System.out.println("Random attack done");
+				break;
+			case 1:
+				System.out.println("Iniciando garde attack....");
+				heapAtack(graph, genGradHeap(graph), path);
+				System.out.println("Grade attack done");
+				break;
+			case 2:
+				System.out.println("Iniciando strength attack....");
+				heapAtack(graph, genStrHeap(graph), path);
+				System.out.println("Strength attack done");
+				break;
 		}	
 	}
 
-	public static void main(String[] args) {
-		Graph<String, String> myGraph1 = new Graph<>();
-		//Graph<Integer, String> myGraph2 = new Graph<>();
-
-		//generaGraph("networks/wtw2000-sym.net");
-		myGraph1 = generaGraph("networks/airports_UW.net");
+	public static void main(String[] args) throws IOException {
+		Graph<String, Float> graph = new Graph<>();
+		double inicio, fin, tiempo = 0;
+		final int EXEC = 100;
+		File result = new File("tiempos.csv");
+		FileWriter writer = new FileWriter(result);
+		writer.write("Red, Random, grade, strength\n");
 		
-		myGraph1.genGradHeap().coolPrint();
-		//myGraph1 = generaGraph("networks/wtw2000-sym.net");
-		//myGraph1 = generaGraph("networks/email_URV-edges_betw.net");
-		//myGraph1 = generaGraph("networks/powergrid_USA-edges_betw.net");
-		//Integer[] info = new Integer[3]; 
-		//getGraphInfo(myGraph1, info);
-		percoloracio(myGraph1, 1);
+		//Red wtw
+		//Random
+		tiempo = 0;
+		graph = generaGraph("networks/wtw2000-sym.net");
+		for(int i = 1; i <= EXEC; i++) {
+			inicio = System.currentTimeMillis();
+			percoloracio(graph.clone(), 0, "wtw/random/randomWtw"+i+".csv");
+	        fin = System.currentTimeMillis();
+	        tiempo += (double) ((fin - inicio)/1000);
+	        
+		}
+		System.out.println("Tiempo medio en random wtw: "+tiempo/EXEC+" segundos");
+		writer.write("Wtw,"+tiempo/EXEC+",");
 		
-		/*yGraph1.addNode(0);
-		myGraph1.addNode(20);
-
-		myGraph2.addNode(0);
-		myGraph2.addNode(20);
-
-		myGraph1.addEdge(0, 20, "Hola");
-		myGraph2.addEdge(0, 20, "Hola");
-
-		System.out.println(myGraph1.toString());
-		System.out.println(myGraph2.toString());
-
-		System.out.println(myGraph1.getLinks(0));
-
-		myGraph2.removeNode(0);
-		System.out.println(myGraph2.toString());
-
-		Set<Integer> nodes = myGraph1.getAllNodes();
-		System.out.println(nodes);
-
-		for (Integer elem : nodes) {
-
-		}*/
-
+		//Grade
+		tiempo = 0;
+		graph = generaGraph("networks/wtw2000-sym.net");
+		inicio = System.currentTimeMillis();
+		percoloracio(graph, 1, "wtw/gradeWtw.csv");
+        fin = System.currentTimeMillis();
+        tiempo = (double) ((fin - inicio)/1000);
+        System.out.println("Grade wtw: "+tiempo +" segundos");
+        writer.write(tiempo+",");
+        
+        //Strength
+        tiempo = 0;
+		graph = generaGraph("networks/wtw2000-sym.net");
+		inicio = System.currentTimeMillis();
+		percoloracio(graph, 2, "wtw/strengthWtw.csv");
+        fin = System.currentTimeMillis();
+        tiempo = (double) ((fin - inicio)/1000);
+        System.out.println("Strentgh wtw: "+tiempo +" segundos");		
+        writer.write(tiempo+"\n");
+		System.out.println();
+		
+		//Red email URV
+		//Random
+		tiempo = 0;
+		graph = generaGraph("networks/email_URV-edges_betw.net");
+		for(int i = 1; i <= EXEC; i++) {
+			inicio = System.currentTimeMillis();
+			percoloracio(graph.clone(), 0, "email/random/randomEmail"+i+".csv");
+	        fin = System.currentTimeMillis();
+	        tiempo += (double) ((fin - inicio)/1000);
+	        
+		}
+		System.out.println("Tiempo medio en random email: "+tiempo/EXEC+" segundos");
+		writer.write("Email,"+tiempo/EXEC+",");
+		
+		//Grade
+		tiempo = 0;
+		graph = generaGraph("networks/email_URV-edges_betw.net");
+		inicio = System.currentTimeMillis();
+		percoloracio(graph, 1, "email/gradeEmail.csv");
+        fin = System.currentTimeMillis();
+        tiempo = (double) ((fin - inicio)/1000);
+        System.out.println("Grade email: "+tiempo +" segundos");
+        writer.write(tiempo+",");
+        
+        //Strength
+        tiempo = 0;
+        graph = generaGraph("networks/email_URV-edges_betw.net");
+		inicio = System.currentTimeMillis();
+		percoloracio(graph, 2, "email/strengthEmail.csv");
+        fin = System.currentTimeMillis();
+        tiempo = (double) ((fin - inicio)/1000);
+        System.out.println("Strentgh email: "+tiempo +" segundos");		
+        writer.write(tiempo+"\n");
+		System.out.println();
+		
+		//Red airports
+		//Random
+		tiempo = 0;
+		graph = generaGraph("networks/airports_UW.net");
+		for(int i = 1; i <= EXEC; i++) {
+			inicio = System.currentTimeMillis();
+			percoloracio(graph.clone(), 0, "airports/random/randomAirports"+i+".csv");
+	        fin = System.currentTimeMillis();
+	        tiempo += (double) ((fin - inicio)/1000);
+	        
+		}
+		System.out.println("Tiempo medio en random aeropuertos: "+tiempo/EXEC+" segundos");
+		writer.write("Airports,"+tiempo/EXEC+",");
+		
+		//Grade
+		tiempo = 0;
+		graph = generaGraph("networks/airports_UW.net");
+		inicio = System.currentTimeMillis();
+		percoloracio(graph, 1, "airports/gradeAirports.csv");
+        fin = System.currentTimeMillis();
+        tiempo = (double) ((fin - inicio)/1000);
+        System.out.println("Grade airports: "+tiempo +" segundos");
+        writer.write(tiempo+",");
+        
+        //Strength
+        tiempo = 0;
+        graph = generaGraph("networks/airports_UW.net");
+		inicio = System.currentTimeMillis();
+		percoloracio(graph, 2, "airports/strengthAirports.csv");
+        fin = System.currentTimeMillis();
+        tiempo = (double) ((fin - inicio)/1000);
+        System.out.println("Strentgh airports: "+tiempo +" segundos");
+        writer.write(tiempo+"\n");
+        
+        
+		//Red distribución electirca
+        //Random
+        tiempo = 0;
+		graph = generaGraph("networks/powergrid_USA-edges_betw.net");
+		for(int i = 1; i <= EXEC; i++) {
+			inicio = System.currentTimeMillis();
+			percoloracio(graph.clone(), 0, "electrica/random/randomElectrica"+i+".csv");
+	        fin = System.currentTimeMillis();
+	        tiempo += (double) ((fin - inicio)/1000);
+	        System.out.println(tiempo +" segundos");
+		}
+		System.out.println("Tiempo medio en random red electrica: "+tiempo/EXEC+" segundos");
+		writer.write("Electrica,"+tiempo/EXEC+",");
+		
+		//Grade
+		tiempo = 0;
+		graph = generaGraph("networks/powergrid_USA-edges_betw.net");
+		inicio = System.currentTimeMillis();
+		percoloracio(graph, 1, "electrica/gradeElectrica.csv");
+        fin = System.currentTimeMillis();
+        tiempo = (double) ((fin - inicio)/1000);
+        System.out.println("Grade electrica: "+tiempo +" segundos");
+        writer.write(tiempo+",");
+        
+        //Strength
+        tiempo = 0;
+		graph = generaGraph("networks/powergrid_USA-edges_betw.net");
+		inicio = System.currentTimeMillis();
+		percoloracio(graph, 2, "electrica/strengthElectrica.csv");
+        fin = System.currentTimeMillis();
+        tiempo = (double) ((fin - inicio)/1000);
+        System.out.println("Strentgh electrica: "+tiempo +" segundos");
+        writer.write(tiempo+"\n");
+        
+        writer.close();
 	}
-
 }

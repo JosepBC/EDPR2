@@ -57,7 +57,10 @@ public class MaxHeap<T extends Comparable<T>> {
 		int fatherIDX = 0;
 		int sonIDX = 1;
 		
-		if(sonIDX < maxHeap.size() && getRightChild(0).compareTo(getLeftChild(0)) > 0) sonIDX++;
+		if(existRightChild(fatherIDX) && 
+				existLeftChild(fatherIDX) &&
+				sonIDX < maxHeap.size() && 
+				getRightChild(fatherIDX).compareTo(getLeftChild(fatherIDX)) > 0) sonIDX++;
 		
 		while(sonIDX < maxHeap.size() && maxHeap.get(sonIDX).compareTo(last) > 0) {
 			swap(fatherIDX, sonIDX);
@@ -111,5 +114,7 @@ public class MaxHeap<T extends Comparable<T>> {
 	    System.out.println(sb.toString());
 	}
 	
-
+	public int getnElem() {
+		return maxHeap.size();
+	}
 }

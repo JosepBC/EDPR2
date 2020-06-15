@@ -69,7 +69,11 @@ public class NodeT<NodeData> implements Comparable<NodeT<NodeData>> {
 			return false;
 		return true;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "NodeT [contentOfNode=" + contentOfNode + ", heapKey=" + heapKey + "]";
+	}
 	
 
 }

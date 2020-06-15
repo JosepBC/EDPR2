@@ -10,8 +10,8 @@ import java.util.*;
  * @param <EdgeData> Tipus de les arestes
  */
 public class Graph<NodeData, EdgeData> {
-	int nElem;
-	int nVertex;
+	int nNodes;
+	int nEdges;
 	private LinkedHashMap<NodeData, LinkedList<EdgeT<NodeData, EdgeData>>> graph = new LinkedHashMap<>();
 	/**
 	 * 
@@ -19,14 +19,14 @@ public class Graph<NodeData, EdgeData> {
 	 */
 	public Graph() {
 		super();
-		this.nElem = 0;
-		this.nVertex = 0;
+		this.nNodes = 0;
+		this.nEdges = 0;
 	}
 	
-	private Graph(int nElem, int nVertex, LinkedHashMap<NodeData, LinkedList<EdgeT<NodeData, EdgeData>>> graph) {
+	private Graph(int nNodes, int nEdges, LinkedHashMap<NodeData, LinkedList<EdgeT<NodeData, EdgeData>>> graph) {
 		super();
-		this.nElem = nElem;
-		this.nVertex = nVertex;
+		this.nNodes = nNodes;
+		this.nEdges = nEdges;
 		this.graph = new LinkedHashMap<NodeData, LinkedList<EdgeT<NodeData, EdgeData>>>(graph);
 	}
 	
@@ -37,7 +37,7 @@ public class Graph<NodeData, EdgeData> {
 	 */
 	public void addNode(NodeData val) {
 		graph.put(val, new LinkedList<EdgeT<NodeData, EdgeData>>());
-		nElem++;
+		nNodes++;
 	}
 	
 	/**
@@ -59,7 +59,7 @@ public class Graph<NodeData, EdgeData> {
 		EdgeT<NodeData, EdgeData> edge2 = new EdgeT(edgeData, valA);
 		graph.get(valB).add(edge2);
 	
-		nVertex++;
+		nEdges++;
 	}
 	
 	/**
@@ -87,10 +87,10 @@ public class Graph<NodeData, EdgeData> {
 	 * @param idx Índex d'inserció, començant per 1
 	 */
 	public boolean removeRand() {
-		if(nElem == 0) return false;
+		if(nNodes == 0) return false;
 		Object[] keys = this.graph.keySet().toArray();
 		Random rand = new Random();
-		removeNode((NodeData)keys[rand.nextInt(nElem)]);
+		removeNode((NodeData)keys[rand.nextInt(nNodes)]);
 		return true;
 	}
 	
@@ -98,16 +98,20 @@ public class Graph<NodeData, EdgeData> {
 	 * Elimina el node passat per paràmetre, i totes les seves arestes.
 	 * @param val Valor del node a eliminar
 	 */
-	public void removeNode(NodeData val) {
-		LinkedList<EdgeT<NodeData, EdgeData>> edges = this.graph.remove(val);
-		if(edges != null) {
-			nElem--;
+	public boolean removeNode(NodeData val) {
+		if(this.graph.containsKey(val)) {
+			LinkedList<EdgeT<NodeData, EdgeData>> edges = this.graph.remove(val);
+			this.nNodes--;
 			for(EdgeT<NodeData, EdgeData> edge : edges) {
 				EdgeT<NodeData, EdgeData> toRemove = new EdgeT<>(edge.getEdgeVal(), val);
-				this.graph.get(edge.getNextNode()).remove(toRemove);
-				nVertex--;
+				if(this.graph.containsKey(edge.getNextNode())) { //Si contiene el nodo al que apunta, eliminalo
+					this.graph.get(edge.getNextNode()).remove(toRemove);
+				}
+				this.nEdges--;
 			}
+			return true;
 		}
+		return false;
 	}
 
 	/**
@@ -119,12 +123,12 @@ public class Graph<NodeData, EdgeData> {
 		return graph.get(node);
 	}
 
-	public int getnElem() {
-		return nElem;
+	public int getnNodes() {
+		return nNodes;
 	}
 
-	public int getnVertex() {
-		return nVertex;
+	public int getnEdges() {
+		return nEdges;
 	}
 
 	public Set<NodeData> getAllNodes() {
@@ -133,7 +137,7 @@ public class Graph<NodeData, EdgeData> {
 	
 	@Override
 	public String toString() {
-		return "Graph [nElem=" + nElem + ", nVertex=" + nVertex + ", graph=" + graph + "]";
+		return "Graph [nElem=" + nNodes + ", nVertex=" + nEdges + ", graph=" + graph + "]";
 	}
 
 	@Override
@@ -141,8 +145,8 @@ public class Graph<NodeData, EdgeData> {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((graph == null) ? 0 : graph.hashCode());
-		result = prime * result + nElem;
-		result = prime * result + nVertex;
+		result = prime * result + nNodes;
+		result = prime * result + nEdges;
 		return result;
 	}
 
@@ -160,42 +164,16 @@ public class Graph<NodeData, EdgeData> {
 				return false;
 		} else if (!graph.equals(other.graph))
 			return false;
-		if (nElem != other.nElem)
+		if (nNodes != other.nNodes)
 			return false;
-		if (nVertex != other.nVertex)
+		if (nEdges != other.nEdges)
 			return false;
 		return true;
 	}
 
 	@Override
 	public Graph<NodeData, EdgeData> clone() {
-		return new Graph<NodeData, EdgeData>(this.nElem, this.nVertex, this.graph);
+		return new Graph<NodeData, EdgeData>(this.nNodes, this.nEdges, this.graph);
 	}
 	
-	public MaxHeap<NodeT<NodeData>> genGradHeap() {
-		MaxHeap<NodeT<NodeData>> heap = new MaxHeap<NodeT<NodeData>>();
-		Set<NodeData> nodes = this.getAllNodes();
-		for (NodeData content : nodes) {
-			LinkedList<EdgeT<NodeData, EdgeData>> links = getLinks(content);
-			Float key = (float)links.size();
-			heap.insert(new NodeT<NodeData>(content, key));
-		}
-		return heap;
-	}
-	
-	public MaxHeap<NodeT<NodeData>> genStrHeap() {
-		MaxHeap<NodeT<NodeData>> heap = new MaxHeap<NodeT<NodeData>>();
-		Set<NodeData> nodes = this.getAllNodes();
-		for (NodeData content : nodes) {
-			LinkedList<EdgeT<NodeData, EdgeData>> links = getLinks(content);
-			Float key = (float)0;
-			for (EdgeT<NodeData, EdgeData> link : links) {
-				key += (float) link.getEdgeVal();
-			}
-			heap.insert(new NodeT<NodeData>(content, key));
-		}
-		return heap;
-	}
-	
-
 }
