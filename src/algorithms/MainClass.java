@@ -248,6 +248,7 @@ public class MainClass {
 			inicio = System.currentTimeMillis();
 			percoloracio(graph.clone(), 0, "wtw/random/randomWtw"+i+".csv");
 	        fin = System.currentTimeMillis();
+	        graph = generaGraph("networks/wtw2000-sym.net");
 	        tiempo += (double) ((fin - inicio)/1000);
 	        
 		}
@@ -284,7 +285,7 @@ public class MainClass {
 			percoloracio(graph.clone(), 0, "email/random/randomEmail"+i+".csv");
 	        fin = System.currentTimeMillis();
 	        tiempo += (double) ((fin - inicio)/1000);
-	        
+	        graph = generaGraph("networks/email_URV-edges_betw.net");
 		}
 		System.out.println("Tiempo medio en random email: "+tiempo/EXEC+" segundos");
 		writer.write("Email,"+tiempo/EXEC+",");
@@ -319,7 +320,7 @@ public class MainClass {
 			percoloracio(graph.clone(), 0, "airports/random/randomAirports"+i+".csv");
 	        fin = System.currentTimeMillis();
 	        tiempo += (double) ((fin - inicio)/1000);
-	        
+	        graph = generaGraph("networks/airports_UW.net"); 
 		}
 		System.out.println("Tiempo medio en random aeropuertos: "+tiempo/EXEC+" segundos");
 		writer.write("Airports,"+tiempo/EXEC+",");
@@ -355,6 +356,7 @@ public class MainClass {
 	        fin = System.currentTimeMillis();
 	        tiempo += (double) ((fin - inicio)/1000);
 	        System.out.println(tiempo +" segundos");
+	        graph = generaGraph("networks/powergrid_USA-edges_betw.net");
 		}
 		System.out.println("Tiempo medio en random red electrica: "+tiempo/EXEC+" segundos");
 		writer.write("Electrica,"+tiempo/EXEC+",");
