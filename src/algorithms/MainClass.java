@@ -152,7 +152,7 @@ public class MainClass {
 			e.printStackTrace();
 		}
 	}
-	private static void gradeAtack(Graph<String, String> graph, Heap <Float> heap, String path) {
+	private static void gradeAtack(Graph<String, String> graph, MaxHeap <Float> heap, String path) {
 		try {
 			Float  OP, numNodes = (float) graph.getnVertex();
 			Float[] info = new Float[3]; 
@@ -178,7 +178,7 @@ public class MainClass {
 			e.printStackTrace();
 		}
 	}
-	private static void strengthAtack(Graph<String, String> graph, Heap <Float> heap, String path) {
+	private static void strengthAtack(Graph<String, String> graph, MaxHeap <Float> heap, String path) {
 		try {
 			Float  OP, numNodes = (float) graph.getnVertex();
 			Float[] info = new Float[3]; 
@@ -211,7 +211,7 @@ public class MainClass {
 	 * connexes de la xarxa, i de la mida de les dues components connexes més grans,
 	 * a mesura que anem extirpant nodes de la xarxa.
 	 */
-	private static void percoloracio(Graph<String, String> myGraph1, Heap <Float> heap, int mode){
+	private static void percoloracio(Graph<String, String> myGraph1, MaxHeap <Float> heap, int mode){
 		String path = "result.csv";
 		switch (mode) {
 		case 0:
@@ -238,7 +238,7 @@ public class MainClass {
 		//myGraph1 = generaGraph("networks/powergrid_USA-edges_betw.net");
 		//Integer[] info = new Integer[3]; 
 		//getGraphInfo(myGraph1, info);
-		percoloracio(myGraph1,new Heap<Float>(), 0);
+		percoloracio(myGraph1,new MaxHeap<Float>(), 0);
 		
 		/*yGraph1.addNode(0);
 		myGraph1.addNode(20);
