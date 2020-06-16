@@ -355,7 +355,6 @@ public class MainClass {
 			percoloracio(graph.clone(), 0, "electrica/random/randomElectrica"+i+".csv");
 	        fin = System.currentTimeMillis();
 	        tiempo += (double) ((fin - inicio)/1000);
-	        System.out.println(tiempo +" segundos");
 	        graph = generaGraph("networks/powergrid_USA-edges_betw.net");
 		}
 		System.out.println("Tiempo medio en random red electrica: "+tiempo/EXEC+" segundos");
