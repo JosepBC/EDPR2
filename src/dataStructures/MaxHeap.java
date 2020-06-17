@@ -2,15 +2,16 @@ package dataStructures;
 
 import java.util.ArrayList;
 
+/**
+ * Classe per gestionar un MaxHeap genèric
+ * @author Josep Bello
+ * @author Lautaro Russo
+ *
+ * @param <T> Tipus de la classe, ha d'implementar Comparable
+ */
 public class MaxHeap<T extends Comparable<T>> {
 	private ArrayList<T> maxHeap = new ArrayList<T>();
 	
-	/**
-	 * Cambia l'element de l'idx1 per el del idx2
-	 * @param idx1
-	 * @param idx2
-	 * @return
-	 */
 	private boolean swap(int idx1, int idx2) {
 		if(idx1 > maxHeap.size() - 1 || idx2 > maxHeap.size() - 1) return false;
 		T tmp = maxHeap.get(idx1);
@@ -19,6 +20,10 @@ public class MaxHeap<T extends Comparable<T>> {
 		return true;
 	}
 	
+	/**
+	 * Mètode per inserir un node al heap
+	 * @param val Node a inserir
+	 */
 	public void insert(T val) {
 		maxHeap.add(val);
 		int currentIDX = maxHeap.size() - 1;
@@ -30,24 +35,48 @@ public class MaxHeap<T extends Comparable<T>> {
 		}
 	}
 	
+	/**
+	 * Obtenir l'índex del fill esquerre d'un pare
+	 * @param fatherIDX Índex del pare
+	 * @return El fill esquerre o null si no en te o es null
+	 */
 	private T getLeftChild(int fatherIDX) {
 		if(fatherIDX * 2 + 1 > maxHeap.size() - 1) return null;
 		return maxHeap.get((fatherIDX * 2) + 1);
 	}
 	
+	/**
+	 * Obtenir l'índex del fill dret d'un pare
+	 * @param fatherIDX Índex del pare
+	 * @return El fill dret o null si no en te o es null
+	 */
 	private T getRightChild(int fatherIDX) {
 		if((fatherIDX * 2) + 2 > maxHeap.size() - 1) return null;
 		return maxHeap.get((fatherIDX * 2) + 2);
 	}
 	
+	/**
+	 * Mètode per comprobar si existeix el fill dret
+	 * @param fatherIDX Índex del pare
+	 * @return True si existeix, false sino
+	 */
 	private boolean existRightChild(int fatherIDX) {
 		return((fatherIDX * 2) + 2 > maxHeap.size() - 1);
 	}
 	
+	/**
+	 * Mètode per comprobar si existeix el fill esquerre
+	 * @param fatherIDX Índex del pare
+	 * @return True si existeix, false sino
+	 */
 	private boolean existLeftChild(int fatherIDX) {
 		return((fatherIDX * 2) + 1 > maxHeap.size() - 1);
 	}
 	
+	/**
+	 * Mètode per obtenir l'arrel del heap
+	 * @return Arrel del heap
+	 */
 	public T extractRoot() {
 		if(maxHeap.size() == 0) return null;
 		T root = maxHeap.get(0);
@@ -76,6 +105,9 @@ public class MaxHeap<T extends Comparable<T>> {
 		return root;
 	}
 	
+	/**
+	 * Print bàsic per fer debugg
+	 */
 	public void print() {
 		System.out.println(maxHeap.toString());
         for (int i = 0; i < maxHeap.size() / 2; i++) { 
@@ -86,6 +118,9 @@ public class MaxHeap<T extends Comparable<T>> {
 		 
 	}
 	
+	/**
+	 * Print en forma d'arbre trobat per internet, no funciona del tot be ja que començem desde el 0
+	 */
 	public void coolPrint() {
 		StringBuilder sb = new StringBuilder();
 	    int max=0;
@@ -115,6 +150,10 @@ public class MaxHeap<T extends Comparable<T>> {
 	    System.out.println(sb.toString());
 	}
 	
+	/**
+	 * Getter del nombre d'elements del heap
+	 * @return Nombre d'elements del heap
+	 */
 	public int getnElem() {
 		return maxHeap.size();
 	}

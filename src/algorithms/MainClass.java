@@ -15,12 +15,20 @@ import java.util.ArrayList;
 
 import dataStructures.*;
 
+/**
+ * Classe main del projecte
+ * @author Josep Bello
+ * @author Lautaro Russo
+ *
+ */
 public class MainClass {
 
-	/*
+	/**
 	 * Llegir una xarxa format Pajek [4,5], que és un tipus d’arxiu de text que
 	 * permet emmagatzemar l’estructura de la xarxa, així com els atributs als nodes
-	 * i a les arestes. La xarxa es suposa no dirigida.
+	 * i a les arestes. La xarxa es suposa no dirigida
+	 * @param path Path d'on llegir la xarxa
+	 * @return Graf construit
 	 */
 	private static Graph<String, Float> generaGraph(String path) {
 		Graph<String, Float> graph = new Graph<>();
@@ -76,6 +84,7 @@ public class MainClass {
 		}
 		return graph;
 	}
+	
 	/**
 	 * Explora en amplitud tots el nodes d'un arbre de un graph pasat per referencia eliminant els nodes visitats de la llista
 	 * @param graph rep el graph a explorar
@@ -129,6 +138,7 @@ public class MainClass {
 		info[1] = GCC;
 		info[2] = SLCC;
 	}
+	
 	/**
 	 * Algorisme de percoloració mitjançant atacks aleatoris, recull les dades i les afegéix a un fitxer
 	 * @param graph graph base que hem d'analitzar
@@ -163,6 +173,7 @@ public class MainClass {
 			e.printStackTrace();
 		}
 	}
+	
 	/**
 	 * Algorisme de percoloració mitjançant atacks seguint l'ordre d'un max heap, recull les dades i les afegéix a un fitxer
 	 * @param graph graph base que hem d'analitzar
@@ -199,6 +210,7 @@ public class MainClass {
 			e.printStackTrace();
 		}
 	}
+	
 	/**
 	 * Genera un max-heap amb els nodes ordenats segons el seu grau
 	 * @param graph graph base d'on treure els nodes.
@@ -213,6 +225,7 @@ public class MainClass {
 		
 		return heap;
 	}
+	
 	/**
 	 * Genera un max-heap amb els nodes ordenats segons el pes total de les conexions del node
 	 * @param graph graph base d'on treure els nodes.
@@ -239,7 +252,6 @@ public class MainClass {
 	 * @param mode criteri d'atack
 	 * @param path directori del fitxer on emmagatzemar les dades
 	 */
-	
 	private static void percoloracio(Graph<String, Float> graph, int mode, String path){
 		switch (mode) {
 			case 0:

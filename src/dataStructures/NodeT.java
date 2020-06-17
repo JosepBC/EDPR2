@@ -1,43 +1,58 @@
 package dataStructures;
 
 /**
- * Pequeña clase para utilizar como nodos del heap de la P2 de ED.
- * Diseñada para guardar una clave y un valor. 
- * - La clave es de tipo float y es lo que usara el heap para ordenar
- * - El valor es de tipo T, generico, pensado para guardar exactamente el mismo valor que en el grafo.
+ * Petita classe par utilizar com nodes del heap de la P2 de ED
+ * Disenyada per guardar una clau i un valor
+ * La clau sera l'utilitzada per ordenar el heap
  * @author Josep Bello
  * @author Lautaro Russo
  *
- * @param <NodeData> Tipo del nodo que hay en el grafo. 
+ * @param <NodeData> Tipus del valor
  */
 public class NodeT<NodeData> implements Comparable<NodeT<NodeData>> {
 	private NodeData contentOfNode;
 	private Float heapKey;
 	
 	/**
-	 * Unico constructor de la classe. Guarda todos los datos necesarios.
-	 * @param contentOfNode Contenido del nodo del grafo. Se usara despues para buscar en el grafo el nodo.
-	 * @param heapKey Parametro que se usara para ordenar en el heap. Diseñado para guardar el grado/strength del nodo que contiene como valor el pametro anterior
+	 * Únic constructor de la classe, amb totes les dades necessaries
+	 * @param contentOfNode Identificador del node al graf, el seu contingut, s'utilitzara despres per buscar-lo.
+	 * @param heapKey Paràmetre que utilitzarem per ordenar el heap
 	 */
 	public NodeT(NodeData contentOfNode, Float heapKey) {
 		this.contentOfNode = contentOfNode;
 		this.heapKey = heapKey;
 	}
 	
+	/**
+	 * Getter del identificador del node, contingut
+	 * @return Identificador del node
+	 */
 	public NodeData getContentOfNode() {
 		return contentOfNode;
 	}
 
+	/**
+	 * Getter de la clau que s'utilitzará per ordenar en el heap
+	 * @return Valor de la clau
+	 */
 	public Float getHeapKey() {
 		return heapKey;
 	}
 
+	/**
+	 * Mètode per comparar amb un altre node
+	 * @param o Node amb el que comparar
+	 * @return -1, 0 o 1 en funció de si el valor passat es mes petit, igual o mes gran
+	 */
 	@Override
 	public int compareTo(NodeT<NodeData> o) {
 		return this.getHeapKey().compareTo(o.heapKey);
 	}
 
 
+	/**
+	 * hashCode de la classe
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -48,6 +63,9 @@ public class NodeT<NodeData> implements Comparable<NodeT<NodeData>> {
 	}
 
 
+	/**
+	 * equals de la classe
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -70,6 +88,9 @@ public class NodeT<NodeData> implements Comparable<NodeT<NodeData>> {
 		return true;
 	}
 
+	/**
+	 * toString de la classe
+	 */
 	@Override
 	public String toString() {
 		return "NodeT [contentOfNode=" + contentOfNode + ", heapKey=" + heapKey + "]";

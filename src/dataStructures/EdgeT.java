@@ -10,24 +10,43 @@ public class EdgeT<NodeData, EdgeData> {
 	private EdgeData edgeVal;
 	private NodeData nextNode;
 	
+	/**
+	 * Constructor de la classe amb tots els paràmetres per crear una instància.
+	 * @param edge Informació a guardar a l'aresta
+	 * @param linkedNode Node al qual enllaça l'aresta
+	 */
 	public EdgeT(EdgeData edge, NodeData linkedNode) {
 		this.edgeVal = edge;
 		this.nextNode = linkedNode;
 	}
 	
+	/**
+	 * Getter del valor de l'aresta
+	 * @return Valor de l'aresta
+	 */
 	public EdgeData getEdgeVal() {
 		return this.edgeVal;
 	}
 	
+	/**
+	 * Getter del node enllaçat
+	 * @return Node enllaçat
+	 */
 	public NodeData getNextNode() {
 		return this.nextNode;
 	}
 
+	/**
+	 * toString de la classe
+	 */
 	@Override
 	public String toString() {
 		return "EdgeT [edgeVal=" + edgeVal + ", nextNode=" + nextNode + "]";
 	}
 
+	/**
+	 * hashCode de la classe
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -37,6 +56,9 @@ public class EdgeT<NodeData, EdgeData> {
 		return result;
 	}
 
+	/**
+	 * equals de la classe
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -59,6 +81,9 @@ public class EdgeT<NodeData, EdgeData> {
 		return true;
 	}
 
+	/**
+	 * clone de la classe
+	 */
 	@Override
 	public EdgeT<NodeData, EdgeData> clone(){
 		return new EdgeT<NodeData, EdgeData>(this.edgeVal, this.nextNode);

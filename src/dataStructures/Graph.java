@@ -2,7 +2,7 @@ package dataStructures;
 import java.util.*;
 
 /**
- * 
+ * Classe per gestionar un graf genèric en informació als nodes i arestes
  * @author Josep Bello
  * @author Lautaro Russo
  *
@@ -10,12 +10,12 @@ import java.util.*;
  * @param <EdgeData> Tipus de les arestes
  */
 public class Graph<NodeData, EdgeData> {
-	int nNodes;
-	int nEdges;
+	private int nNodes;
+	private int nEdges;
 	private LinkedHashMap<NodeData, LinkedList<EdgeT<NodeData, EdgeData>>> graph = new LinkedHashMap<>();
+
 	/**
-	 * 
-	 * @param repeat Determina si volem afegir l'enllaç A->B i B->A o no
+	 * Constructor bàsic.
 	 */
 	public Graph() {
 		super();
@@ -23,6 +23,12 @@ public class Graph<NodeData, EdgeData> {
 		this.nEdges = 0;
 	}
 	
+	/**
+	 * Constructor per crear una copia
+	 * @param nNodes Nombre de nodes
+	 * @param nEdges Nombre d'arestes
+	 * @param graph Graf
+	 */
 	private Graph(int nNodes, int nEdges, LinkedHashMap<NodeData, LinkedList<EdgeT<NodeData, EdgeData>>> graph) {
 		super();
 		this.nNodes = nNodes;
@@ -31,9 +37,8 @@ public class Graph<NodeData, EdgeData> {
 	}
 	
 	/**
-	 * Afegeix un node al graf amb el valor passat per paràmetre.
-	 * @param val
-	 * @return
+	 * Afegeix un node al graf amb el valor passat per paràmetre
+	 * @param val Valor a afegir
 	 */
 	public void addNode(NodeData val) {
 		graph.put(val, new LinkedList<EdgeT<NodeData, EdgeData>>());
@@ -41,10 +46,10 @@ public class Graph<NodeData, EdgeData> {
 	}
 	
 	/**
-	 * Conecta el nodeA amb el nodeB. Si algun node d'aquests no existeix, es crea.
-	 * @param nodeA
-	 * @param nodeB
-	 * @param edgeData
+	 * Conecta el nodeA amb el nodeB. Si algun node d'aquests no existeix, es crea
+	 * @param valA Contingut del nodeA
+	 * @param valB Contingut del nodeB
+	 * @param edgeData Contingut a guardar a l'aresta
 	 */
 	public void addEdge(NodeData valA, NodeData valB, EdgeData edgeData) {
 		//Si algun dels nodes no existeix, afegeix-lo
@@ -63,10 +68,11 @@ public class Graph<NodeData, EdgeData> {
 	}
 	
 	/**
-	 * Elimina una aresta passant els index dels nodes que linka.
-	 * @param idx1 Índex d'un node
-	 * @param idx2 Índex de l'altre node
-	 * @param edgeData Contingut de l'aresta
+	 * Elimina una aresta passant els índex dels nodes que ha d'unir
+	 * @param idx1 Índex del node A segons ordre d'inserció. 1...N
+	 * @param idx2 Índex del node B segons ordre d'inserció. 1...N
+	 * @param edgeData Contingut a guardar a l'arestaa
+	 * @return True si s'ha pogut afegir, false si algun dels dos nodes no existeix
 	 */
 	public boolean addEdgeIDX(int idx1, int idx2, EdgeData edgeData) {
 		if(idx1 > this.graph.size() || idx2 > this.graph.size()) return false;
@@ -76,8 +82,9 @@ public class Graph<NodeData, EdgeData> {
 	}
 	
 	/**
-	 * Elimina un node, i totes les arestes que apunten a aquest passant un index. 
-	 * @param idx Índex d'inserció, començant per 1
+	 * Elimina un node, i totes les arestes que apunten a aquest passant un index
+	 * @param idx Índex del node segons ordre d'inserció. 1...N
+	 * @return True si s'ha trobat i pogut eliminar, false sino
 	 */
 	public boolean removeNodeIDX(int idx) {
 		if(idx > this.graph.size()) return false;
@@ -86,8 +93,8 @@ public class Graph<NodeData, EdgeData> {
 	}
 	
 	/**
-	 * Elimina un aleatori, i totes les arestes que apunten a aquest.
-	 * @param idx Índex d'inserció, començant per 1
+	 * Elimina un aleatori, i totes les arestes que apunten a aquest
+	 * @return True si s'ha trobat i eliminat, false en cualsevol altre cas
 	 */
 	public boolean removeRand() {
 		if(nNodes == 0) return false;
@@ -99,6 +106,7 @@ public class Graph<NodeData, EdgeData> {
 	/**
 	 * Elimina el node passat per paràmetre, i totes les seves arestes.
 	 * @param val Valor del node a eliminar
+	 * @return True si s'ha trobat i eliminat, false en cualsevol altre cas
 	 */
 	public boolean removeNode(NodeData val) {
 		if(this.graph.containsKey(val)) {
@@ -118,30 +126,50 @@ public class Graph<NodeData, EdgeData> {
 
 	/**
 	 * Operació per obtenir tots els enllaços del node passat per paràmetre. Null si no existeix
-	 * @param node
+	 * @param node Node del cual obtenir els enllaços
 	 * @return Els enllaços o null si no existeix el node passat
 	 */
 	public LinkedList<EdgeT<NodeData, EdgeData>> getLinks(NodeData node) {
 		return graph.get(node);
 	}
 
+	/**
+	 * Getter del nombre de nodes del graf
+	 * @return Nombre de nodes
+	 */
 	public int getnNodes() {
 		return nNodes;
 	}
 
+	/**
+	 * Getter del nombre d'arestes del graf
+	 * @return Nombre d'arestes
+	 */
 	public int getnEdges() {
 		return nEdges;
 	}
 
+	/**
+	 * Mètode per obtenir tots els nodes del graf
+	 * @return Set amb tots els nodes del graf
+	 */
 	public Set<NodeData> getAllNodes() {
 		return this.graph.keySet();
 	}
 	
+	
+	/**
+	 * toString de la classe
+	 */
 	@Override
 	public String toString() {
 		return "Graph [nElem=" + nNodes + ", nVertex=" + nEdges + ", graph=" + graph + "]";
 	}
 
+	
+	/**
+	 * HashCode de la classe
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -152,6 +180,10 @@ public class Graph<NodeData, EdgeData> {
 		return result;
 	}
 
+	
+	/**
+	 * Equals de la claasse
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -172,7 +204,10 @@ public class Graph<NodeData, EdgeData> {
 			return false;
 		return true;
 	}
-
+	
+	/**
+	 * Clone de la classe
+	 */
 	@Override
 	public Graph<NodeData, EdgeData> clone() {
 		return new Graph<NodeData, EdgeData>(this.nNodes, this.nEdges, this.graph);

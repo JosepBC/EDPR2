@@ -2,6 +2,12 @@ package dataStructures;
 import java.util.LinkedList;
 import java.util.Set;
 
+/**
+ * Main de prova per les estructures de dades
+ * @author Josep Bello
+ * @author Lautaro Russo
+ *
+ */
 public class MainClass {
 
 	public static void main(String[] args) {

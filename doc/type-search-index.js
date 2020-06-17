@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"dataStructures","l":"EdgeT"},{"p":"dataStructures","l":"Graph"},{"p":"algorithms","l":"MainClass"},{"p":"dataStructures","l":"MainClass"},{"p":"dataStructures","l":"MaxHeap"},{"p":"dataStructures","l":"NodeT"}]
