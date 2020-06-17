@@ -76,11 +76,17 @@ public class MainClass {
 		}
 		return graph;
 	}
+	/**
+	 * Explora en amplitud tots el nodes d'un arbre de un graph pasat per referencia eliminant els nodes visitats de la llista
+	 * @param graph rep el graph a explorar
+	 * @param llista llista de nodes visitats
+	 * @return grau de la component conexa
+	 */
 	private static Float BFS(Graph<String, Float> graph, Set<String> llista) {
 		ArrayList <String> cola = new ArrayList<String>();
 		ArrayList <String> elim = new ArrayList<String>();
 		Iterator<String> aux = llista.iterator();
-		Float NCC = (float) 0;
+		Float grau = (float) 0;
 		cola.add(aux.next());
 		while (!cola.isEmpty()) {
 			// sacar adyacéncias del primero de la cola
@@ -96,14 +102,15 @@ public class MainClass {
 			// borrar el cabeza de cola de la cola
 			elim.add(cola.get(0));
 			cola.remove(0);
-			NCC++;
+			grau++;
 		}
-		return NCC;
+		return grau;
 	}
 
-	/*
-	 * Detecció de components connexes utilitzant un algorisme d’exploració com els
-	 * explicats a classe.
+	/**
+	 * Explora un graph contant el nombre de components conexes, i guardant la mes gran y la segona mesgran
+	 * @param graph graph a explorar
+	 * @param info vector amb les dades a retornar per referéncia
 	 */
 	private static void getGraphInfo(Graph<String, Float> graph, Float[] info) {
 		Float NCC = (float) 0, GCC = (float) 0, SLCC = (float) 0, grau;
@@ -122,6 +129,11 @@ public class MainClass {
 		info[1] = GCC;
 		info[2] = SLCC;
 	}
+	/**
+	 * Algorisme de percoloració mitjançant atacks aleatoris, recull les dades i les afegéix a un fitxer
+	 * @param graph graph base que hem d'analitzar
+	 * @param path directori del fitxer on emmagatzemar les dades recollides
+	 */
 	private static void randomAtack(Graph<String, Float> graph, String path) {
 		try {
 			Float  OP, NCC = (float) 0;
@@ -151,6 +163,12 @@ public class MainClass {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * Algorisme de percoloració mitjançant atacks seguint l'ordre d'un max heap, recull les dades i les afegéix a un fitxer
+	 * @param graph graph base que hem d'analitzar
+	 * @param heap estructura ordenada max-heap, determina el criteri de l'atac
+	 * @param path directori del fitxer on emmagatzemar les dades recollides
+	 */
 	private static void heapAtack(Graph<String, Float> graph, MaxHeap<NodeT<String>> heap, String path) {
 		try {
 			Float  OP, numNodes = (float) graph.getnNodes(), NCC = (float)0;
@@ -181,7 +199,11 @@ public class MainClass {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * Genera un max-heap amb els nodes ordenats segons el seu grau
+	 * @param graph graph base d'on treure els nodes.
+	 * @return dades estructurades en forma de max-heap
+	 */
 	private static MaxHeap<NodeT<String>> genGradHeap(Graph<String, Float> graph) {
 		MaxHeap<NodeT<String>> heap = new MaxHeap<>();
 		Set<String> nodes = graph.getAllNodes();
@@ -191,7 +213,11 @@ public class MainClass {
 		
 		return heap;
 	}
-	
+	/**
+	 * Genera un max-heap amb els nodes ordenats segons el pes total de les conexions del node
+	 * @param graph graph base d'on treure els nodes.
+	 * @return dades estructurades en forma de max-heap
+	 */
 	private static MaxHeap<NodeT<String>> genStrHeap(Graph<String, Float> graph) {
 		MaxHeap<NodeT<String>> heap = new MaxHeap<>();
 		Set<String> nodes = graph.getAllNodes();
@@ -207,11 +233,13 @@ public class MainClass {
 		return heap;
 	}
 	
-	/*
-	 * Anàlisi de percolació. Visualització de l’evolució del nombre de components
-	 * connexes de la xarxa, i de la mida de les dues components connexes més grans,
-	 * a mesura que anem extirpant nodes de la xarxa.
+	/** 
+	 * Anàlisi de percolació. Visualització de l’evolució del nombre de components connexes de la xarxa, i de la mida de les dues components connexes més grans, a mesura que anem extirpant nodes de la xarxa.
+	 * @param graph graph a analitzar
+	 * @param mode criteri d'atack
+	 * @param path directori del fitxer on emmagatzemar les dades
 	 */
+	
 	private static void percoloracio(Graph<String, Float> graph, int mode, String path){
 		switch (mode) {
 			case 0:
