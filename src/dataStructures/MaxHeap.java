@@ -49,6 +49,7 @@ public class MaxHeap<T extends Comparable<T>> {
 	}
 	
 	public T extractRoot() {
+		if(maxHeap.size() == 0) return null;
 		T root = maxHeap.get(0);
 		T last = maxHeap.get(maxHeap.size() - 1);
 		swap(0, maxHeap.size() - 1);

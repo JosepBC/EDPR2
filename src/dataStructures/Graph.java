@@ -68,18 +68,21 @@ public class Graph<NodeData, EdgeData> {
 	 * @param idx2 Índex de l'altre node
 	 * @param edgeData Contingut de l'aresta
 	 */
-	public void addEdgeIDX(int idx1, int idx2, EdgeData edgeData) {
+	public boolean addEdgeIDX(int idx1, int idx2, EdgeData edgeData) {
+		if(idx1 > this.graph.size() || idx2 > this.graph.size()) return false;
 		Object[] keys = this.graph.keySet().toArray();
 		addEdge((NodeData)keys[idx1-1], (NodeData)keys[idx2-1], edgeData);
+		return true;
 	}
 	
 	/**
 	 * Elimina un node, i totes les arestes que apunten a aquest passant un index. 
 	 * @param idx Índex d'inserció, començant per 1
 	 */
-	public void removeNodeIDX(int idx) {
+	public boolean removeNodeIDX(int idx) {
+		if(idx > this.graph.size()) return false;
 		Object[] keys = this.graph.keySet().toArray();
-		removeNode((NodeData)keys[idx-1]);
+		return removeNode((NodeData)keys[idx-1]);
 	}
 	
 	/**
@@ -90,8 +93,7 @@ public class Graph<NodeData, EdgeData> {
 		if(nNodes == 0) return false;
 		Object[] keys = this.graph.keySet().toArray();
 		Random rand = new Random();
-		removeNode((NodeData)keys[rand.nextInt(nNodes)]);
-		return true;
+		return removeNode((NodeData)keys[rand.nextInt(nNodes)]);
 	}
 	
 	/**
